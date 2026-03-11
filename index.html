@@ -157,6 +157,17 @@
     .contact-card p { color: var(--muted); margin-bottom: 2rem; }
     .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
+    /* RESUME DROPDOWN */
+    .resume-dropdown { position: relative; display: inline-block; }
+    .resume-dropdown .btn-secondary { display: flex; align-items: center; gap: 0.5rem; }
+    .resume-dropdown .btn-secondary::after { content: '▾'; font-size: 0.8rem; transition: transform 0.2s; }
+    .resume-dropdown.open .btn-secondary::after { transform: rotate(180deg); }
+    .dropdown-menu { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 50; min-width: 150px; }
+    .resume-dropdown.open .dropdown-menu { display: block; }
+    .dropdown-menu a { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1rem; font-size: 0.88rem; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.15s; }
+    .dropdown-menu a:hover { background: rgba(91,141,238,0.1); color: var(--accent); }
+    .dropdown-menu a + a { border-top: 1px solid var(--border); }
+
     footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.85rem; color: var(--muted); }
 
     @media (max-width: 768px) {
@@ -501,7 +512,13 @@
       <div class="contact-links">
         <a href="mailto:W.S.Hosking@gmail.com" class="btn btn-primary">W.S.Hosking@gmail.com</a>
         <a href="https://www.linkedin.com/in/william-hosking-a800ba88/" class="btn btn-secondary" target="_blank">LinkedIn</a>
-        <a href="William_Hosking_Resume.docx" class="btn btn-secondary" download>Resume</a>
+        <div class="resume-dropdown" id="resumeDropdown">
+          <button class="btn btn-secondary" onclick="document.getElementById('resumeDropdown').classList.toggle('open')">Resume</button>
+          <div class="dropdown-menu">
+            <a href="https://docs.google.com/viewer?url=https://wshosking.github.io/William_Hosking_Resume.docx" target="_blank">👁️ View</a>
+            <a href="William_Hosking_Resume.docx" download>⬇️ Download</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -509,5 +526,11 @@
 
 <footer><p>© 2026 Will Hosking · Denver, CO</p></footer>
 
+<script>
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('resumeDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+</script>
 </body>
 </html>
