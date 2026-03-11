@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cannabis Beverage Brand — Strategic Market Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #181c27; --surface2: #1e2333; --border: #2a2f45;
+      --accent: #5b8dee; --accent2: #7c6ff7; --green: #22c55e; --yellow: #f59e0b;
+      --red: #ef4444; --text: #e8eaf0; --muted: #8891a8;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; background: rgba(15,17,23,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; z-index: 100; }
+    .nav-back { color: var(--accent); text-decoration: none; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+    .nav-back:hover { opacity: 0.8; }
+    .nav-title { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+    .nav-badge { font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.25); }
+
+    /* HERO */
+    .hero { padding: 4rem 2rem 3rem; background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,141,238,0.1) 0%, transparent 70%); border-bottom: 1px solid var(--border); text-align: center; }
+    .hero-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: rgba(91,141,238,0.1); border: 1px solid rgba(91,141,238,0.2); padding: 0.3rem 0.8rem; border-radius: 100px; margin-bottom: 1.25rem; }
+    .hero h1 { font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; color: #fff; margin-bottom: 0.75rem; }
+    .hero-sub { color: var(--muted); font-size: 0.95rem; max-width: 560px; margin: 0 auto 2rem; }
+    .meta-row { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+    .meta-item { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 0.35rem; }
+    .meta-item strong { color: var(--text); }
+
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 220px 1fr; gap: 0; max-width: 1100px; margin: 0 auto; }
+    .sidebar { position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; padding: 2rem 1rem; border-right: 1px solid var(--border); }
+    .sidebar-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.75rem; padding-left: 0.5rem; }
+    .sidebar a { display: block; font-size: 0.82rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.5rem; border-radius: 6px; border-left: 2px solid transparent; transition: all 0.15s; margin-bottom: 0.1rem; }
+    .sidebar a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .main-content { padding: 3rem 2.5rem; }
+
+    /* SECTIONS */
+    .doc-section { margin-bottom: 3.5rem; scroll-margin-top: 72px; }
+    .section-num { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.4rem; }
+    .section-title { font-size: 1.35rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+    .section-divider { height: 1px; background: var(--border); margin: 0.75rem 0 1.5rem; }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { color: var(--muted); margin-bottom: 0.85rem; }
+    p strong { color: var(--text); }
+
+    /* CALLOUT BOXES */
+    .callout { border-radius: 10px; padding: 1.1rem 1.25rem; margin: 1.25rem 0; border-left: 3px solid; }
+    .callout-urgent { background: rgba(239,68,68,0.07); border-color: var(--red); }
+    .callout-urgent .callout-label { color: var(--red); }
+    .callout-info { background: rgba(91,141,238,0.07); border-color: var(--accent); }
+    .callout-info .callout-label { color: var(--accent); }
+    .callout-warn { background: rgba(245,158,11,0.07); border-color: var(--yellow); }
+    .callout-warn .callout-label { color: var(--yellow); }
+    .callout-success { background: rgba(34,197,94,0.07); border-color: var(--green); }
+    .callout-success .callout-label { color: var(--green); }
+    .callout-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .callout p { margin: 0; font-size: 0.92rem; }
+    .callout p + p { margin-top: 0.4rem; }
+
+    /* TABLES */
+    .table-wrap { overflow-x: auto; margin: 1.25rem 0; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--muted); font-weight: 600; padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid rgba(42,47,69,0.5); color: var(--text); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .t-green { color: var(--green); font-weight: 600; }
+    .t-yellow { color: var(--yellow); font-weight: 600; }
+    .t-red { color: var(--red); font-weight: 600; }
+    .t-muted { color: var(--muted); }
+
+    /* STAT CARDS */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem; }
+    .stat-box-num { font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .stat-box-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* PATHS */
+    .path-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .path-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+    .path-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .path-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .path-desc { font-size: 0.85rem; color: var(--muted); }
+    .path-time { font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; font-style: italic; }
+    .path-rec { border-color: var(--green) !important; background: rgba(34,197,94,0.05) !important; }
+    .path-rec .path-label { color: var(--green); }
+
+    /* CHECKLIST */
+    .checklist { list-style: none; margin: 0.75rem 0; }
+    .checklist li { font-size: 0.9rem; color: var(--muted); padding: 0.35rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid rgba(42,47,69,0.4); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: '☐'; position: absolute; left: 0; color: var(--accent); font-size: 0.9rem; }
+    .checklist li strong { color: var(--text); }
+
+    /* MARKET TIERS */
+    .tier-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 4px; margin-left: 0.5rem; }
+    .tier-1 { background: rgba(239,68,68,0.15); color: var(--red); }
+    .tier-2 { background: rgba(245,158,11,0.15); color: var(--yellow); }
+    .tier-3 { background: rgba(91,141,238,0.15); color: var(--accent); }
+
+    /* REDACTED */
+    .redacted { background: rgba(255,255,255,0.08); color: transparent; border-radius: 3px; padding: 0 0.3em; user-select: none; }
+
+    /* FOOTER */
+    .doc-footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; color: var(--muted); font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main-content { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="index.html">← Back to Portfolio</a>
+  <span class="nav-title">Cannabis Brand — Strategic Analysis</span>
+  <span class="nav-badge">Confidential · Anonymized</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Regulatory Research · GTM Strategy · Market Analysis</div>
+  <h1>Hemp Beverage Brand —<br/>Strategic Market Analysis</h1>
+  <p class="hero-sub">Full strategic brief prepared for a sales advisor evaluating a commission + equity role at an Ohio-based hemp beverage brand. Company and individual details anonymized by request.</p>
+  <div class="meta-row">
+    <div class="meta-item">📅 <strong>February 2026</strong></div>
+    <div class="meta-item">🏭 <strong>Hemp Beverage · Ohio</strong></div>
+    <div class="meta-item">💰 <strong>~$720K ARR</strong></div>
+    <div class="meta-item">⚠️ <strong>Regulatory Time Pressure</strong></div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <a href="#context">01 — Urgent Context</a>
+    <a href="#social">02 — Brand Reality Check</a>
+    <a href="#paths">03 — Strategic Paths</a>
+    <a href="#markets">04 — Target Markets</a>
+    <a href="#hemp-states">05 — Hemp States Window</a>
+    <a href="#competitive">06 — Competitive Landscape</a>
+    <a href="#distribution">07 — Distribution Strategy</a>
+    <a href="#risks">08 — Risks & Pain Points</a>
+    <a href="#action">09 — 90-Day Action Plan</a>
+    <a href="#keydata">Key Data Points</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- CONTEXT BOX -->
+    <div class="callout callout-warn" style="margin-bottom:2.5rem;">
+      <div class="callout-label">⚠️ Document Context</div>
+      <p>This brief was prepared to help a sales advisor assess whether to take a commission + equity role at a hemp beverage company facing significant regulatory headwinds. The analysis covers the regulatory environment, market opportunity, competitive landscape, and a recommended 90-day action plan. All company and personal identifiers have been removed.</p>
+    </div>
+
+    <!-- PRE-ANALYSIS REQUIREMENTS -->
+    <div class="doc-section" id="prereqs">
+      <div class="section-num">Pre-Analysis</div>
+      <div class="section-title">Information Needed to Sharpen Recommendations</div>
+      <div class="section-divider"></div>
+      <p>This analysis is based on publicly available information. The following items from the client would sharpen every recommendation:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Why It Matters</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Instagram Insights — follower locations by state</td><td>Determines where real demand already exists</td><td class="t-red">Not yet provided</td></tr>
+            <tr><td>Shopify/website order data by state (last 12 months)</td><td>Strongest real demand signal for expansion targeting</td><td class="t-red">Not yet provided</td></tr>
+            <tr><td>Per-can THC dosage (exact mg)</td><td>Determines eligibility for proposed federal carve-out</td><td class="t-red">Not yet provided</td></tr>
+            <tr><td>Current distribution footprint</td><td>Baseline for expansion modeling</td><td class="t-green">✓ Confirmed: Ohio beer retail + D2C online</td></tr>
+            <tr><td>Licensing status</td><td>Determines cannabis channel entry options</td><td class="t-green">✓ Hemp-only. No cannabis licenses. Entry via white label.</td></tr>
+            <tr><td>Annual revenue</td><td>Size of business being defended/grown</td><td class="t-green">✓ ~$60K/month (~$720K ARR)</td></tr>
+            <tr><td>Advisor compensation structure</td><td>Risk/reward alignment for the role</td><td class="t-green">✓ Commission + equity. Dual mandate: hemp expansion + cannabis entry.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="doc-section" id="context">
+      <div class="section-num">Part 1</div>
+      <div class="section-title">Urgent Context: The Clock Is Ticking</div>
+      <div class="section-divider"></div>
+
+      <div class="callout callout-urgent">
+        <div class="callout-label">🚨 This is not a future planning problem — it is a present crisis</div>
+        <p>This brand has approximately <strong>9 months</strong> before their core product line becomes federally illegal. Two legal blows have already fallen.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-num" style="color:var(--red)">Nov 12, 2026</div><div class="stat-box-lbl">Federal ban effective date</div></div>
+        <div class="stat-box"><div class="stat-box-num" style="color:var(--red)">~Mar 2026</div><div class="stat-box-lbl">Ohio SB 56 takes effect</div></div>
+        <div class="stat-box"><div class="stat-box-num">~9 months</div><div class="stat-box-lbl">Remaining runway</div></div>
+        <div class="stat-box"><div class="stat-box-num" style="color:var(--yellow)">Pending</div><div class="stat-box-lbl">Federal carve-out (not yet law)</div></div>
+      </div>
+
+      <h3>Two Legal Blows Already Landed</h3>
+      <p><strong>1. Ohio SB 56 (already law):</strong> Ohio has passed legislation banning intoxicating hemp products in the state — the brand's home market. Their core revenue is already at risk in the state where they operate.</p>
+      <p><strong>2. Federal "Closing the Loop" Law (effective November 12, 2026):</strong> Passed in late 2025 as part of a government funding deal. Closes the 2018 Farm Bill loophole that made hemp THC beverages federally legal. The transition window is finite.</p>
+
+      <h3>The One Remaining Hope: Federal Carve-Out (Not Yet Law)</h3>
+      <div class="callout callout-warn">
+        <div class="callout-label">⚠️ Not a plan — a hope</div>
+        <p>A proposed amendment would protect low-dose hemp products: <strong>5mg THC edibles and 10mg THC drinks.</strong> This has NOT passed as of the analysis date. Strategy cannot be built around it passing.</p>
+      </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="doc-section" id="social">
+      <div class="section-num">Part 2</div>
+      <div class="section-title">Social Media & Brand Reality Check</div>
+      <div class="section-divider"></div>
+
+      <h3>Current Social Footprint</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Followers / Reach</th><th>Assessment</th></tr></thead>
+          <tbody>
+            <tr><td>Instagram</td><td>~10,700 followers</td><td class="t-yellow">Early-stage but crossed meaningful threshold</td></tr>
+            <tr><td>Facebook</td><td>~160 likes, low engagement</td><td class="t-red">Not a meaningful channel yet</td></tr>
+            <tr><td>YouTube</td><td>Active — includes state senate testimony</td><td class="t-green">Credibility signal</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Key insight:</strong> Social media demographics alone cannot drive market expansion strategy at this stage. The stronger signals are order data and award wins.</p>
+
+      <h3>What the Brand Story Actually Signals</h3>
+      <p>Despite early-stage social metrics, the brand has genuine, defensible assets:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Asset</th><th>Details</th><th>Strategic Value</th></tr></thead>
+          <tbody>
+            <tr><td>🏆 Award credibility</td><td>Double Gold Best in State + Double Gold Midwest Best, 2025 America's Best Infused Beverage Awards</td><td class="t-green">Lead every pitch with this</td></tr>
+            <tr><td>🌿 Authentic origin story</td><td>Local spring water, hand-trimmed buds, indoor-grown, Appalachian heritage</td><td class="t-yellow">Strong in regional markets</td></tr>
+            <tr><td>🏛️ Community rootedness</td><td>State senate testimony; regional economic network member</td><td class="t-yellow">Advocacy credibility</td></tr>
+            <tr><td>🍺 Brewery partnership</td><td>Co-formulation development with respected regional craft brewery</td><td class="t-green">Distribution &amp; brand halo potential</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Target Consumer Profile (Inferred)</h3>
+      <p>Adults 25–45 seeking an alcohol alternative with a lifestyle identity. Appalachian/Midwest cultural resonance. Craft beverage consumers who prefer locally sourced, artisanal products. Cannabis-curious consumers who prefer a "front porch" vibe over a dispensary experience.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="doc-section" id="paths">
+      <div class="section-num">Part 3</div>
+      <div class="section-title">Strategic Paths Forward</div>
+      <div class="section-divider"></div>
+      <p>Three paths exist. One recommended sequence.</p>
+
+      <div class="path-grid">
+        <div class="path-card">
+          <div class="path-label" style="color:var(--accent)">Path A</div>
+          <div class="path-title">Regulated Cannabis Channel</div>
+          <div class="path-desc">Enter adult-use cannabis markets as a cannabis-licensed beverage brand. Requires state licenses or co-manufacturing partnerships. High upside, high complexity.</div>
+          <div class="path-time">⏱ Timeline: 12–18 months minimum</div>
+        </div>
+        <div class="path-card path-rec">
+          <div class="path-label">✓ Path B — Recommended Now</div>
+          <div class="path-title">Hemp Beverage Continuity</div>
+          <div class="path-desc">Maximize hemp beverage sales in states that still permit them during the remaining legal window (through November 2026). Builds revenue and distributor relationships before the deadline.</div>
+          <div class="path-time">⏱ Start immediately — window closes Nov 2026</div>
+        </div>
+        <div class="path-card">
+          <div class="path-label" style="color:var(--yellow)">Path C</div>
+          <div class="path-title">Reformulation + Functional Pivot</div>
+          <div class="path-desc">Reformulate to federally compliant cannabinoids (CBD, CBN, CBG). Preserves brand and infrastructure long-term but gives up THC differentiation.</div>
+          <div class="path-time">⏱ Timeline: 6–12 months to develop &amp; launch</div>
+        </div>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-label">✓ Recommended Sequence</div>
+        <p><strong>Path B now</strong> (9 months of hemp revenue in surviving states) running in parallel with <strong>Path A pipeline</strong> (Ohio dispensary licensing or co-manufacturing partner). Path C as insurance if Path A encounters regulatory delays.</p>
+      </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="doc-section" id="markets">
+      <div class="section-num">Part 4</div>
+      <div class="section-title">Target Markets: Regulated Cannabis States</div>
+      <div class="section-divider"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Priority</th><th>State</th><th>Rationale</th><th>Key Stat</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="tier-badge tier-1">Priority 1</span></td>
+              <td><strong>Ohio</strong></td>
+              <td>Home state; adult-use launched 2024; SB 56 bans hemp but dispensary channel growing</td>
+              <td>Ohio contributed to $54.6M Q1 2025 national cannabis beverage figure</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-1">Priority 2</span></td>
+              <td><strong>Michigan</strong></td>
+              <td>Adjacent to Ohio; large adult-use market; robust dispensary ecosystem; beverage-friendly</td>
+              <td>$3B+ annual cannabis market</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-2">Priority 3</span></td>
+              <td><strong>Illinois</strong></td>
+              <td>Mature, competitive but large; Chicago metro dispensaries drive strong traffic</td>
+              <td>Consistently top-3 US market by revenue</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-2">Priority 4</span></td>
+              <td><strong>Pennsylvania</strong></td>
+              <td>Major medical market; strong adult-use momentum; pre-launch positioning opportunity</td>
+              <td>Adult-use expected to launch within 12–18 months</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-3">Priority 5</span></td>
+              <td><strong>MD / NJ / VA</strong></td>
+              <td>Growing East Coast adult-use markets; Appalachian brand story travels well eastward</td>
+              <td>All launched adult-use 2023–2024</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>States to Deprioritize Initially</h3>
+      <p><strong>California</strong> — oversaturated, high compliance cost, fierce competition. <strong>New York</strong> — regulatory delays, complex licensing. <strong>Texas</strong> — no adult-use; strong for hemp channel only (see Part 5).</p>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="doc-section" id="hemp-states">
+      <div class="section-num">Part 5</div>
+      <div class="section-title">Hemp Beverage Continuity: States Still Open</div>
+      <div class="section-divider"></div>
+      <p>The following states had not enacted state-level bans on hemp-derived THC products as of the analysis date. These represent the immediate revenue window before the federal deadline.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tier</th><th>States</th><th>Why Prioritize</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="tier-badge tier-1">Tier 1 — High Priority</span></td>
+              <td><strong>Texas, Florida</strong></td>
+              <td>Largest populations without adult-use cannabis. Hemp channel robust. High headshop density. Target for immediate outreach.</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-2">Tier 2 — Solid Opportunity</span></td>
+              <td>Tennessee, Georgia, North Carolina, Virginia</td>
+              <td>No hemp bans. Consistent headshop markets. NC especially — strong craft/agricultural brand resonance matches this brand's story.</td>
+            </tr>
+            <tr>
+              <td><span class="tier-badge tier-3">Tier 3 — Monitor</span></td>
+              <td>Minnesota, Missouri</td>
+              <td>Changing or partial regulations. Hemp channel still active but shrinking as dispensary channel matures.</td>
+            </tr>
+            <tr>
+              <td class="t-red">Skip / Already Restricted</td>
+              <td>Ohio, CA, ID, KS, SC, SD, UT, IN</td>
+              <td>Hemp banned or hostile regulatory environment</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-label">Strategy for the Window</div>
+        <p>Focus hemp distribution efforts on <strong>Texas and Florida in the next 60 days.</strong> These two states alone offer more addressable opportunity than the rest of the open states combined, and headshop infrastructure in both is mature enough to absorb volume quickly through regional distributors.</p>
+      </div>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="doc-section" id="competitive">
+      <div class="section-num">Part 6</div>
+      <div class="section-title">Competitive Landscape: THC Beverage Market</div>
+      <div class="section-divider"></div>
+
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-num">$54.6M</div><div class="stat-box-lbl">Q1 2025 cannabis beverage sales</div></div>
+        <div class="stat-box"><div class="stat-box-num">+15%</div><div class="stat-box-lbl">YoY growth rate (BDSA)</div></div>
+        <div class="stat-box"><div class="stat-box-num">$1.68B</div><div class="stat-box-lbl">2025 market projection</div></div>
+        <div class="stat-box"><div class="stat-box-num">$8.07B</div><div class="stat-box-lbl">2035 projection (17% CAGR)</div></div>
+      </div>
+
+      <h3>Competitor Benchmarks</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Brand</th><th>THC Dose</th><th>Price/Can</th><th>Channel</th><th>Positioning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cann</strong></td><td>2.5mg / 5mg</td><td>$5–8</td><td>Dispensary + DTC</td><td>Lifestyle, premium, celebrity-backed. Category creator.</td></tr>
+            <tr><td><strong>Wynk</strong></td><td>2.5mg / 5mg</td><td>$4–6</td><td>DTC + select retail</td><td>Functional wellness, clean seltzer format.</td></tr>
+            <tr><td><strong>Cycling Frog</strong></td><td>5mg D9 + 25mg D8</td><td>$5–6</td><td>DTC + headshops</td><td>Highest-volume hemp beverage. Value play.</td></tr>
+            <tr><td><strong>Keef</strong></td><td>2.5–10mg</td><td>$5–7</td><td>Dispensaries</td><td>Cola format. Strong Midwest dispensary presence.</td></tr>
+            <tr><td><strong>Uncle Arnie's</strong></td><td>10mg</td><td>$5–8</td><td>CA dispensaries + DTC</td><td>High brand recognition, West Coast, value-forward.</td></tr>
+            <tr><td><strong>Cantrip</strong></td><td>5–10mg</td><td>$6–9</td><td>DTC + bars/restaurants</td><td>Craft mixer format. On-premise consumption angle.</td></tr>
+            <tr><td><strong style="color:var(--accent)">This Client</strong></td><td>TBD</td><td class="t-red"><strong>$19.99</strong></td><td>Ohio retail + D2C</td><td>Award-winning, artisanal, Appalachian. Premium.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-urgent">
+        <div class="callout-label">🚨 Critical Pricing Issue</div>
+        <p>At <strong>$19.99/can</strong>, this brand is priced 2.5×–4× higher than every major competitor. The advisor needs a bulletproof answer to: <em>"Why $19.99 when Wynk is $5?"</em></p>
+        <p style="margin-top:0.5rem;">Available justifications: (1) Award credibility — only Double Gold award-winning THC beverage in the Midwest; (2) Craft/quality premium — local spring water, hand-trimmed, indoor-grown; (3) Per-mg value if dosage is significantly higher than competitors; (4) Early-stage brand pricing — artisanal production economics.</p>
+        <p style="margin-top:0.5rem;"><strong>Recommended pricing move:</strong> Introduce a 4-pack at $59–65 (reducing effective per-can cost to ~$15) while maintaining $19.99 single-can flagship. Easier distributor pitch, better consumer economics.</p>
+      </div>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="doc-section" id="distribution">
+      <div class="section-num">Part 7</div>
+      <div class="section-title">Headshop & Smoke Shop Distribution Strategy</div>
+      <div class="section-divider"></div>
+      <p>Headshops and smoke shops are the primary retail channel for hemp THC beverages — they stock products without cannabis licenses. This is the bridge channel for the remaining legal window.</p>
+
+      <h3>The 5-Step Playbook</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Action</th><th>Key Detail</th></tr></thead>
+          <tbody>
+            <tr><td class="t-green">Step 1</td><td><strong>Lead with the award</strong></td><td>"Double Gold Best in State Ohio. Double Gold Midwest Best. 2025 America's Best Infused Beverage Awards." On every sales asset.</td></tr>
+            <tr><td class="t-green">Step 2</td><td><strong>Depth before geography</strong></td><td>50 doors in Dallas-Fort Worth is worth more than 5 doors in 10 states. Pick 2 states and dominate before spreading thin.</td></tr>
+            <tr><td class="t-green">Step 3</td><td><strong>Work distributors, not individual stores</strong></td><td>One distributor unlocks dozens to hundreds of stores. McLane Company (TX) and Core-Mark International are priority targets.</td></tr>
+            <tr><td class="t-yellow">Step 4</td><td><strong>Build the wholesale pitch packet</strong></td><td>Award cert + brand story + product sheet + margin calc + sample kit + 30-day return policy to remove buyer risk.</td></tr>
+            <tr><td class="t-yellow">Step 5</td><td><strong>Introduce multi-pack pricing</strong></td><td>Single can ($19.99) for impulse + 4-pack ($59–65) for distributor economics. Consider a lower-dose entry SKU at $8–12.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="doc-section" id="risks">
+      <div class="section-num">Part 8</div>
+      <div class="section-title">Risks & Pain Points for the Advisor Role</div>
+      <div class="section-divider"></div>
+
+      <div class="callout callout-warn">
+        <div class="callout-label">What the Advisor Should Know Before Signing On</div>
+        <p>The opportunity is real — but the risks are significant and some are existential. Eyes open going in.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Existential regulatory risk — 9-month window on core product line</td><td class="t-red">Critical</td><td>Move fast on hemp states; parallel-path cannabis licensing</td></tr>
+            <tr><td>2</td><td>Home state (Ohio) already closed to hemp products</td><td class="t-red">Critical</td><td>Entire revenue opportunity is outside Ohio now</td></tr>
+            <tr><td>3</td><td>$19.99 price creates first-objection friction at every buyer meeting</td><td class="t-yellow">High</td><td>Award-led pitch + 4-pack introduction</td></tr>
+            <tr><td>4</td><td>Small social following limits demographic targeting data</td><td class="t-yellow">Medium</td><td>Rely on order data, not social; get Shopify analytics immediately</td></tr>
+            <tr><td>5</td><td>Federal carve-out is not a plan — it might not pass</td><td class="t-red">Critical</td><td>Treat as upside, not base case; build strategy without it</td></tr>
+            <tr><td>6</td><td>Cannabis licensing takes 12–18 months minimum</td><td class="t-yellow">High</td><td>Start licensing pipeline immediately even if uncertain; explore co-mfg</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-label">✓ The Opportunity is Real if They Move Fast</div>
+        <p>This brand has genuine differentiation: award-winning product, authentic origin story, artisanal production, community credibility, and early revenue traction at $720K ARR. The window is closing — but it's still open. The advisor's value is in creating urgency and executing the bridge strategy before the deadline arrives.</p>
+      </div>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="doc-section" id="action">
+      <div class="section-num">Part 9</div>
+      <div class="section-title">Recommended 90-Day Action Plan</div>
+      <div class="section-divider"></div>
+
+      <h3>Days 1–14: Intelligence Gathering</h3>
+      <ul class="checklist">
+        <li>Get Instagram Insights follower location data from the brand team</li>
+        <li>Get Shopify customer order data by state (last 12 months)</li>
+        <li>Confirm per-can THC mg dosage for all SKUs</li>
+        <li>Understand current licensing status — any cannabis applications pending?</li>
+        <li>Map current retail doors: how many stores, which states, which channels</li>
+        <li>Finalize advisor compensation and scope of role</li>
+      </ul>
+
+      <h3>Days 15–30: Market Prioritization</h3>
+      <ul class="checklist">
+        <li>Select 2 focus states for headshop push (<strong>recommendation: Texas + Florida</strong>)</li>
+        <li>Identify 3–5 target distributors in each focus state</li>
+        <li>Build wholesale pitch packet — lead with Double Gold award</li>
+        <li>Research Ohio dispensary licensing pathway or co-manufacturing partners</li>
+        <li>Develop 4-pack pricing to improve retail accessibility</li>
+      </ul>
+
+      <h3>Days 31–90: Execution</h3>
+      <ul class="checklist">
+        <li>Outreach to 10 target distributors in focus states (with samples)</li>
+        <li>Secure at least 2 in-person distributor meetings</li>
+        <li>Track federal carve-out legislation weekly — changes strategy overnight if passed</li>
+        <li>Identify 1 Ohio cannabis licensee to explore co-manufacturing or licensing deal</li>
+        <li>Deliver 90-day pipeline report to brand leadership</li>
+      </ul>
+    </div>
+
+    <!-- KEY DATA -->
+    <div class="doc-section" id="keydata">
+      <div class="section-num">Reference</div>
+      <div class="section-title">Key Data Points — Know These Cold</div>
+      <div class="section-divider"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data Point</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Federal ban effective date</td><td class="t-red"><strong>November 12, 2026</strong></td></tr>
+            <tr><td>Ohio SB 56 effective date</td><td class="t-red">~March 20, 2026 — intoxicating hemp banned in Ohio</td></tr>
+            <tr><td>Adult-use cannabis states (Jan 2026)</td><td>24 states + DC</td></tr>
+            <tr><td>Cannabis beverage market — Q1 2025</td><td>$54.6M, +15% YoY (BDSA)</td></tr>
+            <tr><td>Cannabis beverage market — 2035 projection</td><td>$8B (17% CAGR, Future Market Insights)</td></tr>
+            <tr><td>Client annual revenue</td><td>~$720K ARR (~$60K/month)</td></tr>
+            <tr><td>Client distribution</td><td>Ohio beer retailers + D2C (no out-of-state retail yet)</td></tr>
+            <tr><td>Client price point</td><td class="t-red">$19.99/can (vs. $4–8 for most competitors)</td></tr>
+            <tr><td>Client award</td><td class="t-green">Double Gold Best in State Ohio + Double Gold Midwest Best, 2025 America's Best Infused Beverage Awards</td></tr>
+            <tr><td>Top hemp-legal states for immediate push</td><td>Texas, Florida, Tennessee, Georgia, North Carolina</td></tr>
+            <tr><td>Top regulated cannabis targets</td><td>Ohio (home), Michigan, Illinois, Pennsylvania</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /layout -->
+
+<div class="doc-footer">
+  <span>Prepared by Will Hosking (AI-assisted research) · February 2026</span>
+  <span>Company and individual details anonymized · For portfolio use only</span>
+</div>
+
+</body>
+</html>
