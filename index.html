@@ -510,8 +510,7 @@
       <h3>Let's work together</h3>
       <p>Open to full-time and contract opportunities in customer success, AI operations, and technical account management. Also available for research and automation projects.</p>
       <div class="contact-links">
-        <button class="btn btn-primary" id="emailBtn" onclick="copyEmail()">W.S.Hosking@gmail.com</button>
-        <div id="emailCopied" style="display:none;margin-top:0.75rem;width:100%;text-align:center;font-size:0.88rem;font-weight:600;color:var(--green);letter-spacing:0.02em;">✓ Copied to clipboard!</div>
+        <a href="mailto:W.S.Hosking@gmail.com?subject=Reaching%20out%20from%20your%20portfolio" class="btn btn-primary">W.S.Hosking@gmail.com</a>
         <a href="https://www.linkedin.com/in/william-hosking-a800ba88/" class="btn btn-secondary" target="_blank">LinkedIn</a>
         <div class="resume-dropdown" id="resumeDropdown">
           <button class="btn btn-secondary" onclick="document.getElementById('resumeDropdown').classList.toggle('open')">Resume</button>
@@ -528,19 +527,6 @@
 <footer><p>© 2026 Will Hosking · Denver, CO</p></footer>
 
 <script>
-  function copyEmail() {
-    navigator.clipboard.writeText('W.S.Hosking@gmail.com').then(function() {
-      var btn = document.getElementById('emailBtn');
-      var msg = document.getElementById('emailCopied');
-      btn.textContent = '✓ Copied!';
-      msg.style.display = 'block';
-      setTimeout(function() {
-        btn.textContent = 'W.S.Hosking@gmail.com';
-        msg.style.display = 'none';
-      }, 2500);
-    });
-  }
-
   document.addEventListener('click', function(e) {
     const dd = document.getElementById('resumeDropdown');
     if (dd && !dd.contains(e.target)) dd.classList.remove('open');
