@@ -7,394 +7,139 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0f1117;
-      --surface: #181c27;
-      --surface2: #1e2333;
-      --border: #2a2f45;
-      --accent: #5b8dee;
-      --accent2: #7c6ff7;
-      --text: #e8eaf0;
-      --muted: #8891a8;
-      --tag-bg: #1e2a44;
-      --tag-color: #7aabff;
+      --bg: #0f1117; --surface: #181c27; --surface2: #1e2333; --border: #2a2f45;
+      --accent: #5b8dee; --accent2: #7c6ff7; --text: #e8eaf0; --muted: #8891a8;
+      --tag-bg: #1e2a44; --tag-color: #7aabff;
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 16px;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; font-size: 16px; }
 
     /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: rgba(15,17,23,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-      padding: 0 2rem;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-    }
-
+    nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(15,17,23,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 100; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; letter-spacing: -0.01em; }
     .nav-logo span { color: var(--accent); }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
     nav a:hover { color: var(--text); }
 
     /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,141,238,0.12) 0%, transparent 70%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(124,111,247,0.08) 0%, transparent 70%);
-      top: 10%; right: -100px;
-      pointer-events: none;
-    }
-
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,141,238,0.12) 0%, transparent 70%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,111,247,0.08) 0%, transparent 70%); top: 10%; right: -100px; pointer-events: none; }
     .hero-content { max-width: 700px; position: relative; }
-
-    .hero-badge {
-      display: inline-block;
-      background: var(--tag-bg);
-      color: var(--tag-color);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.9rem;
-      border-radius: 100px;
-      border: 1px solid rgba(91,141,238,0.25);
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1.25rem;
-      color: #fff;
-    }
-
-    h1 span {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 540px;
-      margin: 0 auto 2.5rem;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.75rem 1.75rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-    }
-
+    .hero-badge { display: inline-block; background: var(--tag-bg); color: var(--tag-color); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px; border: 1px solid rgba(91,141,238,0.25); margin-bottom: 1.5rem; }
+    h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem; color: #fff; }
+    h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.15rem; color: var(--muted); max-width: 540px; margin: 0 auto 2.5rem; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
     .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    .btn-secondary {
-      background: var(--surface2);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
     .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
     /* SECTIONS */
     section { padding: 6rem 2rem; }
-    .container { max-width: 1000px; margin: 0 auto; }
-
-    .section-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #fff;
-      margin-bottom: 1rem;
-    }
-
-    .section-desc {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 3.5rem;
-    }
+    .container { max-width: 1060px; margin: 0 auto; }
+    .section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; }
+    .section-desc { font-size: 1.05rem; color: var(--muted); max-width: 600px; margin-bottom: 3.5rem; }
 
     /* ABOUT */
     #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .about-text p {
-      color: var(--muted);
-      margin-bottom: 1rem;
-      font-size: 1.02rem;
-    }
-
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1.02rem; }
     .about-text p strong { color: var(--text); }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-    }
-
-    .stat-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-
-    .stat-num {
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: -0.02em;
-    }
-
-    .stat-label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+    .stat-num { font-size: 1.9rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
 
     /* PROJECTS */
     #projects { background: var(--bg); }
+    #wip { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .wip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
 
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.75rem;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-
-    .project-card:hover {
-      border-color: rgba(91,141,238,0.4);
-      transform: translateY(-3px);
-    }
-
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; position: relative; display: flex; flex-direction: column; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.25s; }
+    .project-card:hover { border-color: rgba(91,141,238,0.4); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
     .project-card:hover::before { opacity: 1; }
 
-    .project-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+    .card-main { padding: 1.75rem; flex: 1; }
+    .project-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .project-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { background: var(--tag-bg); color: var(--tag-color); font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 100px; border: 1px solid rgba(91,141,238,0.15); }
+    .tag-wip { background: rgba(245,158,11,0.12); color: var(--yellow); border-color: rgba(245,158,11,0.25); }
 
-    .project-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
+    /* DATA PREVIEW */
+    .data-preview { border-top: 1px solid var(--border); background: #0d1018; padding: 0; }
+    .preview-header { padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .preview-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .preview-badge { font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 4px; background: rgba(91,141,238,0.12); color: var(--accent); border: 1px solid rgba(91,141,238,0.2); }
+    .preview-table-wrap { overflow-x: auto; }
+    .preview-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; font-family: 'SF Mono', 'Fira Code', monospace; }
+    .preview-table th { background: #131722; color: var(--muted); font-weight: 600; padding: 0.45rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .preview-table td { padding: 0.4rem 0.75rem; border-bottom: 1px solid rgba(42,47,69,0.5); color: #c8cfe0; white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+    .preview-table tr:last-child td { border-bottom: none; }
+    .preview-table tr:hover td { background: rgba(91,141,238,0.04); }
+    .tier-hot { color: #f97316; font-weight: 600; }
+    .tier-warm { color: var(--yellow); font-weight: 600; }
+    .score-high { color: var(--green); font-weight: 700; }
+    .score-med { color: var(--yellow); font-weight: 700; }
+    .dm-yes { color: var(--green); }
+    .dm-no { color: #ef4444; }
+    .preview-footer { padding: 0.5rem 1rem; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); font-style: italic; }
 
-    .project-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 1.25rem;
-    }
+    /* SLIDE PREVIEW */
+    .slide-deck { padding: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+    .slide-thumb { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.65rem 0.75rem; }
+    .slide-num { font-size: 0.62rem; color: var(--muted); font-family: monospace; margin-bottom: 0.25rem; }
+    .slide-title { font-size: 0.75rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .slide-sub { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.3; }
 
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
+    /* STAT STRIP */
+    .stat-strip { display: flex; gap: 0; border-top: 1px solid var(--border); }
+    .strip-stat { flex: 1; padding: 0.75rem; text-align: center; border-right: 1px solid var(--border); }
+    .strip-stat:last-child { border-right: none; }
+    .strip-num { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+    .strip-lbl { font-size: 0.68rem; color: var(--muted); margin-top: 0.1rem; }
 
-    .tag {
-      background: var(--tag-bg);
-      color: var(--tag-color);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.25rem 0.65rem;
-      border-radius: 100px;
-      border: 1px solid rgba(91,141,238,0.15);
-    }
+    /* WIP CARD */
+    .wip-card { background: var(--surface2); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; }
+    .wip-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--yellow), #f97316); }
+    .wip-card-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .wip-badge { font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 100px; background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); letter-spacing: 0.04em; text-transform: uppercase; }
+    .wip-card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .wip-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
     /* SKILLS */
-    #skills { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .skill-group {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
-
-    .skill-group-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.85rem;
-    }
-
-    .skill-group ul {
-      list-style: none;
-    }
-
-    .skill-group li {
-      font-size: 0.9rem;
-      color: var(--muted);
-      padding: 0.3rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
+    #skills { background: var(--bg); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .skill-group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .skill-group-title { font-size: 0.85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
+    .skill-group ul { list-style: none; }
+    .skill-group li { font-size: 0.9rem; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
     .skill-group li:last-child { border-bottom: none; }
 
     /* CONTACT */
-    #contact { background: var(--bg); text-align: center; }
+    #contact { background: var(--surface); text-align: center; border-top: 1px solid var(--border); }
+    .contact-card { background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 3.5rem; max-width: 580px; margin: 0 auto; background: radial-gradient(ellipse at top, rgba(91,141,238,0.07), transparent 70%), var(--surface2); }
+    .contact-card h3 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+    .contact-card p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-    .contact-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 3.5rem;
-      max-width: 580px;
-      margin: 0 auto;
-      background: radial-gradient(ellipse at top, rgba(91,141,238,0.07), transparent 70%), var(--surface);
-    }
-
-    .contact-card h3 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.75rem;
-    }
-
-    .contact-card p {
-      color: var(--muted);
-      margin-bottom: 2rem;
-    }
-
-    .contact-links {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.85rem; color: var(--muted); }
 
     @media (max-width: 720px) {
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       nav ul { display: none; }
       .contact-card { padding: 2rem; }
+      .slide-deck { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -406,6 +151,7 @@
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#wip">In Progress</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -416,7 +162,7 @@
   <div class="hero-content">
     <div class="hero-badge">AI Operations &amp; Research</div>
     <h1>Turning AI into<br /><span>real business outcomes</span></h1>
-    <p>I use AI tools to solve real problems — lead generation, market research, GTM strategy, workflow automation, and product development. This is the work.</p>
+    <p>I use AI to solve real problems — lead generation, market research, GTM strategy, workflow automation, and product development. Here's the actual work.</p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">View Projects</a>
       <a href="William_Hosking_Resume.docx" class="btn btn-secondary" download>Download Resume</a>
@@ -433,7 +179,7 @@
         <h2 class="section-title">Sales + AI.<br/>A rare combination.</h2>
         <p>I spent 8+ years in B2B SaaS sales, account management, and team leadership — then went all-in on AI-powered operations.</p>
         <p>I build things with AI: lead research pipelines, strategy documents, automated workflows, multi-agent systems, and data-driven decision tools. Not demos — <strong>real deliverables for real clients.</strong></p>
-        <p>Currently building <strong>TradeOps</strong>, an AI-powered ops platform for small trade contractors, while taking on research and automation projects for businesses and individuals.</p>
+        <p>Currently building out AI-powered platforms for the trades and marine industries, while taking on research and automation projects for businesses and individuals.</p>
         <div style="margin-top:1.75rem;">
           <a href="#contact" class="btn btn-primary">Get in touch</a>
         </div>
@@ -449,129 +195,294 @@
         </div>
         <div class="stat-card">
           <div class="stat-num">9+</div>
-          <div class="stat-label">AI projects shipped</div>
+          <div class="stat-label">AI projects shipped or in flight</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">4</div>
-          <div class="stat-label">AI agents deployed & monitored</div>
+          <div class="stat-label">AI agents deployed &amp; monitored</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
+<!-- COMPLETED PROJECTS -->
 <section id="projects">
   <div class="container">
-    <div class="section-label">Projects</div>
-    <h2 class="section-title">What I've built</h2>
-    <p class="section-desc">Every project here started with a real problem. No toy demos — just work that delivered results.</p>
+    <div class="section-label">Completed Work</div>
+    <h2 class="section-title">What I've shipped</h2>
+    <p class="section-desc">Every project here started with a real problem. Real data, real clients, real results.</p>
 
     <div class="projects-grid">
 
+      <!-- MULTI-AGENT SYSTEM -->
       <div class="project-card">
-        <div class="project-icon">🏗️</div>
-        <div class="project-title">TradeOps</div>
-        <div class="project-desc">AI-powered operations platform for small trade contractors. Conducted field-level customer discovery by shadowing a GC/finish carpenter through the bidding process. Designing workflows, pricing models, and the product architecture for a $300–500/mo SaaS offering.</div>
-        <div class="project-tags">
-          <span class="tag">Product Development</span>
-          <span class="tag">AI Automation</span>
-          <span class="tag">SaaS</span>
-          <span class="tag">Customer Discovery</span>
+        <div class="card-main">
+          <div class="project-icon">🤖</div>
+          <div class="project-title">Multi-Agent AI System</div>
+          <div class="project-desc">Designed and deployed a 4-agent OpenClaw system — executive assistant, coding agent, build/UI agent, and a dedicated user-facing agent — with full API integrations, scheduled workflows, and cross-agent communication.</div>
+          <div class="project-tags">
+            <span class="tag">OpenClaw</span><span class="tag">Multi-Agent</span><span class="tag">Infrastructure</span><span class="tag">API Integration</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Agent Architecture</span>
+            <span class="preview-badge">4 Agents Live</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Agent</th><th>Role</th><th>Channel</th><th>Model</th></tr></thead>
+              <tbody>
+                <tr><td>Craig</td><td>Executive Assistant</td><td>Telegram</td><td>Claude Sonnet</td></tr>
+                <tr><td>Chip</td><td>User-Facing EA</td><td>iMessage</td><td>Claude Sonnet</td></tr>
+                <tr><td>Cody</td><td>Coding Agent</td><td>Sub-agent</td><td>Claude Sonnet</td></tr>
+                <tr><td>Bob</td><td>Build / UI Agent</td><td>Sub-agent</td><td>Claude Haiku</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
+      <!-- MISSION CONTROL DASHBOARD -->
       <div class="project-card">
-        <div class="project-icon">🤖</div>
-        <div class="project-title">Multi-Agent AI System</div>
-        <div class="project-desc">Designed and deployed a 4-agent OpenClaw system (executive assistant, coding agent, build/UI agent, and a dedicated user-facing agent) with a custom monitoring dashboard. Handles scheduling, research, messaging, and automated workflows across agents.</div>
-        <div class="project-tags">
-          <span class="tag">OpenClaw</span>
-          <span class="tag">Multi-Agent</span>
-          <span class="tag">Infrastructure</span>
-          <span class="tag">Dashboard</span>
+        <div class="card-main">
+          <div class="project-icon">🖥️</div>
+          <div class="project-title">Mission Control Dashboard</div>
+          <div class="project-desc">Built a custom real-time monitoring UI for the full agent system. Features sidebar navigation, live status indicators, per-agent stat cards, session tracking, and cost monitoring — designed and shipped end-to-end as a standalone internal ops tool.</div>
+          <div class="project-tags">
+            <span class="tag">Dashboard</span><span class="tag">Real-Time</span><span class="tag">UI/UX</span><span class="tag">AI Ops</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Dashboard Panels</span>
+            <span class="preview-badge">Live UI</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Panel</th><th>What It Tracks</th></tr></thead>
+              <tbody>
+                <tr><td>Agent Status</td><td>Live / idle / error per agent</td></tr>
+                <tr><td>Session Log</td><td>Message history, timestamps, costs</td></tr>
+                <tr><td>Cost Monitor</td><td>Token usage &amp; $ spend per agent</td></tr>
+                <tr><td>Health Check</td><td>Service uptime, API connectivity</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
+      <!-- CAR WASH -->
       <div class="project-card">
-        <div class="project-icon">🖥️</div>
-        <div class="project-title">Mission Control Dashboard</div>
-        <div class="project-desc">Built a custom real-time monitoring dashboard for the full 4-agent AI system. Features a sidebar nav, live status indicators, per-agent stat cards, session tracking, cost monitoring, and health checks — all in a single dark-mode UI. Designed and shipped end-to-end as a standalone internal ops tool.</div>
-        <div class="project-tags">
-          <span class="tag">Dashboard</span>
-          <span class="tag">Real-Time Monitoring</span>
-          <span class="tag">UI/UX</span>
-          <span class="tag">AI Ops</span>
+        <div class="card-main">
+          <div class="project-icon">🚗</div>
+          <div class="project-title">Car Wash Acquisition Research</div>
+          <div class="project-desc">Helped two buyers evaluate car wash acquisitions by scraping listings across the web, then scoring each against their investment parameters. Custom scoring model factored in SDE multiples, revenue, EBITDA margin, and real estate. Delivered a ranked shortlist ready for seller calls.</div>
+          <div class="project-tags">
+            <span class="tag">Deal Sourcing</span><span class="tag">Financial Scoring</span><span class="tag">SMB</span><span class="tag">Web Scraping</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Live Data Snapshot — Scored Listings</span>
+            <span class="preview-badge">Top Contenders</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Tier</th><th>Score</th><th>City, State</th><th>Ask Price</th><th>Revenue</th><th>SDE Mult</th><th>EBITDA%</th></tr></thead>
+              <tbody>
+                <tr><td class="tier-hot">🔥 Strong</td><td class="score-high">12</td><td>Richardson, TX</td><td>$7.25M</td><td>$1.34M</td><td>12.1x</td><td>45%</td></tr>
+                <tr><td class="tier-hot">🔥 Strong</td><td class="score-high">10</td><td>Conyers, GA</td><td>$5.80M</td><td>$1.10M</td><td>8.9x</td><td>59%</td></tr>
+                <tr><td class="tier-warm">🟡 Potential</td><td class="score-med">8</td><td>Decatur, GA</td><td>$8.00M</td><td>$1.20M</td><td>9.5x</td><td>70%</td></tr>
+                <tr><td class="tier-warm">🟡 Potential</td><td class="score-med">8</td><td>Gwinnett Co, GA</td><td>$7.40M</td><td>$1.42M</td><td>8.2x</td><td>63%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="preview-footer">Custom scoring model across 12 parameters · Real listings · Delivered as ranked spreadsheet</div>
         </div>
       </div>
 
+      <!-- STR LEAD GEN -->
       <div class="project-card">
-        <div class="project-icon">📊</div>
-        <div class="project-title">X Lead Scrub: 700 → 94</div>
-        <div class="project-desc">Scraped 3 years of posts from X (Twitter) for a company, filtering for investment-intent signals. Built a qualification pipeline that reduced 700+ raw leads down to 94 high-quality prospects, delivered as a ranked, scored spreadsheet ready for outreach.</div>
-        <div class="project-tags">
-          <span class="tag">Lead Generation</span>
-          <span class="tag">Data Scraping</span>
-          <span class="tag">X / Twitter API</span>
-          <span class="tag">Qualification</span>
+        <div class="card-main">
+          <div class="project-icon">🏡</div>
+          <div class="project-title">STR Investor Lead Generation</div>
+          <div class="project-desc">Built a targeted lead pipeline to identify short-term rental investors on X. Pulled 1,000+ raw profiles, scored and filtered by territory, investment signals, follower count, and DM availability — delivering a qualified, prioritized list ready for outreach with no manual research required.</div>
+          <div class="project-tags">
+            <span class="tag">Lead Generation</span><span class="tag">Real Estate</span><span class="tag">X / Twitter</span><span class="tag">Lead Scoring</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Qualified Lead Sample</span>
+            <span class="preview-badge">1,000+ → Qualified</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Score</th><th>Territory</th><th>Handle</th><th>Followers</th><th>DM Open</th></tr></thead>
+              <tbody>
+                <tr><td class="score-high">4</td><td>🎯 Colorado</td><td>@SkyRunVR</td><td>1,140</td><td class="dm-no">✕</td></tr>
+                <tr><td class="score-high">4</td><td>🎯 Colorado</td><td>@DurangoMtnHome</td><td>24</td><td class="dm-no">✕</td></tr>
+                <tr><td class="score-med">3</td><td>🇺🇸 US Investor</td><td>@cashflowgal</td><td>687</td><td class="dm-yes">✓</td></tr>
+                <tr><td class="score-med">3</td><td>🇺🇸 US Investor</td><td>@OCGProperties</td><td>1,734</td><td class="dm-no">✕</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="preview-footer">Scored across territory fit, bio signals, follower count, DM availability &amp; verified status</div>
         </div>
       </div>
 
+      <!-- X LEAD SCRUB -->
       <div class="project-card">
-        <div class="project-icon">🚗</div>
-        <div class="project-title">Car Wash Acquisition Research</div>
-        <div class="project-desc">Helped two buyers evaluate car wash acquisitions by scraping listings across the web, then scoring each against their investment parameters (price, market, condition, revenue). Delivered a ranked shortlist so they could go straight to seller calls. Pipeline includes ongoing SMB research and deal sourcing.</div>
-        <div class="project-tags">
-          <span class="tag">Market Research</span>
-          <span class="tag">Deal Sourcing</span>
-          <span class="tag">SMB</span>
-          <span class="tag">Data Scoring</span>
+        <div class="card-main">
+          <div class="project-icon">📊</div>
+          <div class="project-title">X Lead Scrub: 700 → 94</div>
+          <div class="project-desc">Scraped 3 years of posts from X for a company, filtering replies for investment-intent keywords. Built a multi-stage qualification pipeline — keyword match → engagement filter → DM availability → follower threshold — reducing 700+ raw leads to 94 high-quality prospects.</div>
+          <div class="project-tags">
+            <span class="tag">Lead Qualification</span><span class="tag">X / Twitter API</span><span class="tag">Keyword Filtering</span><span class="tag">Data Pipeline</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Pipeline Methodology — Anonymized</span>
+            <span class="preview-badge">Confidential Client</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Stage</th><th>Filter Applied</th><th>Leads Remaining</th></tr></thead>
+              <tbody>
+                <tr><td>Raw replies</td><td>3-year post history scraped</td><td>2,400+</td></tr>
+                <tr><td>Keyword match</td><td>Investment-intent signals</td><td>~700</td></tr>
+                <tr><td>Engagement filter</td><td>Reply quality &amp; context</td><td>~250</td></tr>
+                <tr><td>DM + follower check</td><td>Reachable &amp; credible accounts</td><td class="score-high">94 ✓</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="preview-footer">Client &amp; company details withheld by request · Methodology shown only</div>
         </div>
       </div>
 
+      <!-- GTM / PITCH DECK -->
       <div class="project-card">
-        <div class="project-icon">🏡</div>
-        <div class="project-title">STR Investor Lead Generation</div>
-        <div class="project-desc">Built a targeted lead generation pipeline to identify short-term vacation rental investors on X. Scraped, filtered, and delivered a list of qualified investor profiles for outreach — purpose-built for a friend entering the STR market.</div>
-        <div class="project-tags">
-          <span class="tag">Lead Generation</span>
-          <span class="tag">Real Estate</span>
-          <span class="tag">X Scraping</span>
+        <div class="card-main">
+          <div class="project-icon">🎯</div>
+          <div class="project-title">GTM Strategy & Investor Pitch Deck</div>
+          <div class="project-desc">Developed a full go-to-market strategy and investor pitch deck for Androgynous®, a genderless fragrance brand targeting the fastest-growing segment of a $60B+ industry. Covered market positioning, channel strategy (DTC → wholesale → brand partnerships), unit economics, and competitive moat.</div>
+          <div class="project-tags">
+            <span class="tag">GTM Strategy</span><span class="tag">Pitch Deck</span><span class="tag">Brand Strategy</span><span class="tag">VC-Ready</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Deck Structure — Androgynous® / Align</span>
+            <span class="preview-badge">10 Slides</span>
+          </div>
+          <div class="slide-deck">
+            <div class="slide-thumb"><div class="slide-num">01</div><div class="slide-title">Androgynous®</div><div class="slide-sub">Genderless Fragrance · "Harmony In A Bottle™"</div></div>
+            <div class="slide-thumb"><div class="slide-num">02</div><div class="slide-title">The Market</div><div class="slide-sub">$60B+ industry · fastest-growing unisex segment</div></div>
+            <div class="slide-thumb"><div class="slide-num">03</div><div class="slide-title">The Problem</div><div class="slide-sub">Fragrance still markets like it's 1985</div></div>
+            <div class="slide-thumb"><div class="slide-num">04</div><div class="slide-title">The Product</div><div class="slide-sub">Formulated for all body chemistry — truly unisex</div></div>
+            <div class="slide-thumb"><div class="slide-num">05</div><div class="slide-title">Traction</div><div class="slide-sub">Real numbers. Real demand.</div></div>
+            <div class="slide-thumb"><div class="slide-num">06</div><div class="slide-title">Unit Economics</div><div class="slide-sub">COGS → margin model per bottle</div></div>
+            <div class="slide-thumb"><div class="slide-num">07</div><div class="slide-title">Go-To-Market</div><div class="slide-sub">3 lanes: DTC → Wholesale → Brand partnerships</div></div>
+            <div class="slide-thumb"><div class="slide-num">08</div><div class="slide-title">Brand &amp; Moat</div><div class="slide-sub">Why Androgynous® wins long-term</div></div>
+          </div>
         </div>
       </div>
 
+      <!-- CRYPTO BACKTEST -->
       <div class="project-card">
-        <div class="project-icon">🎯</div>
-        <div class="project-title">GTM Strategy & Pitch Deck</div>
-        <div class="project-desc">Developed a full go-to-market strategy and investor pitch deck for a fragrance company founder. Covered target market definition, positioning, channel strategy, and financial framing — structured for investor conversations and early sales outreach.</div>
-        <div class="project-tags">
-          <span class="tag">GTM Strategy</span>
-          <span class="tag">Pitch Deck</span>
-          <span class="tag">Consulting</span>
-          <span class="tag">Brand Strategy</span>
+        <div class="card-main">
+          <div class="project-icon">📈</div>
+          <div class="project-title">Crypto Trading Strategy Backtest</div>
+          <div class="project-desc">Backtested a day trading strategy across 6 variations and 3 Coinbase assets to evaluate whether there was enough edge to justify building automated execution code. Analyzed signal types, timeframes, win rates, and drawdown across all combinations before making a build/no-build recommendation.</div>
+          <div class="project-tags">
+            <span class="tag">Backtesting</span><span class="tag">Quant Analysis</span><span class="tag">Coinbase</span><span class="tag">Strategy Research</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Test Matrix</span>
+            <span class="preview-badge">18 Combinations</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Dimension</th><th>Variables Tested</th><th>Count</th></tr></thead>
+              <tbody>
+                <tr><td>Strategy Variations</td><td>Signal types &amp; entry/exit rules</td><td>6</td></tr>
+                <tr><td>Assets</td><td>3 Coinbase crypto pairs</td><td>3</td></tr>
+                <tr><td>Total Combinations</td><td>Full cross-test matrix</td><td class="score-high">18</td></tr>
+                <tr><td>Output</td><td>Win rate, drawdown, build rec.</td><td>✓</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
+      <!-- CANNABIS LAW -->
       <div class="project-card">
-        <div class="project-icon">📈</div>
-        <div class="project-title">Crypto Trading Strategy Backtest</div>
-        <div class="project-desc">Backtested a day trading strategy across 6 different variations and 3 cryptocurrencies on Coinbase to evaluate profitability. Analyzed results across signal types, timeframes, and asset classes to determine whether the strategy had the edge needed to justify building automated execution code.</div>
-        <div class="project-tags">
-          <span class="tag">Backtesting</span>
-          <span class="tag">Crypto</span>
-          <span class="tag">Quant Analysis</span>
-          <span class="tag">Coinbase</span>
+        <div class="card-main">
+          <div class="project-icon">⚖️</div>
+          <div class="project-title">Cannabis & Hemp Law Analysis</div>
+          <div class="project-desc">Researched the national cannabis and hemp regulatory landscape to help a friend evaluate a career opportunity in the space. Synthesized federal vs. state law conflicts, licensing requirements, and employment risk factors into a clear decision framework.</div>
+          <div class="project-tags">
+            <span class="tag">Regulatory Research</span><span class="tag">Legal Analysis</span><span class="tag">Career Advisory</span>
+          </div>
+        </div>
+        <div class="data-preview">
+          <div class="preview-header">
+            <span class="preview-label">Research Scope</span>
+            <span class="preview-badge">Decision Framework</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table">
+              <thead><tr><th>Area Covered</th><th>Output</th></tr></thead>
+              <tbody>
+                <tr><td>Federal law status</td><td>Schedule I conflict analysis</td></tr>
+                <tr><td>State-by-state landscape</td><td>Legality matrix</td></tr>
+                <tr><td>Licensing requirements</td><td>Role-specific requirements</td></tr>
+                <tr><td>Employment risk</td><td>Go / No-go recommendation</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="project-card">
-        <div class="project-icon">⚖️</div>
-        <div class="project-title">Cannabis & Hemp Law Analysis</div>
-        <div class="project-desc">Researched national cannabis and hemp regulatory landscape to help a friend evaluate a career opportunity in the space. Synthesized federal vs. state law discrepancies, licensing requirements, and employment risk factors into a clear decision framework.</div>
-        <div class="project-tags">
-          <span class="tag">Regulatory Research</span>
-          <span class="tag">Legal Analysis</span>
-          <span class="tag">Career Advisory</span>
+    </div>
+  </div>
+</section>
+
+<!-- IN PROGRESS -->
+<section id="wip">
+  <div class="container">
+    <div class="section-label">Currently Building</div>
+    <h2 class="section-title">What's in progress</h2>
+    <p class="section-desc">Active projects in various stages of development. Early but real.</p>
+
+    <div class="wip-grid">
+
+      <div class="wip-card">
+        <div class="wip-card-title">🏗️ TradeOps <span class="wip-badge">In Progress</span></div>
+        <div class="wip-card-desc">AI-powered operations platform for small trade contractors. Conducted field-level discovery by shadowing a GC/finish carpenter through the bidding and project management process. Currently designing workflows, pricing models, and the product architecture for a $300–500/mo SaaS offering.</div>
+        <div class="wip-tags">
+          <span class="tag tag-wip">Product Dev</span><span class="tag tag-wip">SaaS</span><span class="tag tag-wip">Customer Discovery</span><span class="tag tag-wip">AI Automation</span>
+        </div>
+      </div>
+
+      <div class="wip-card">
+        <div class="wip-card-title">⚓ Marine Industry AI <span class="wip-badge">In Progress</span></div>
+        <div class="wip-card-desc">Building AI-assisted research and operations tools for a tugboat company. Early-stage engagement focused on identifying where AI can streamline operations, reduce manual research overhead, and surface business intelligence in a traditionally paper-heavy industry.</div>
+        <div class="wip-tags">
+          <span class="tag tag-wip">Operations</span><span class="tag tag-wip">Research</span><span class="tag tag-wip">Maritime</span><span class="tag tag-wip">AI Tools</span>
+        </div>
+      </div>
+
+      <div class="wip-card">
+        <div class="wip-card-title">🪵 Lumber Industry Research <span class="wip-badge">In Progress</span></div>
+        <div class="wip-card-desc">Scoping AI research and data tooling for a lumber yard client. Focus on market intelligence, supplier analysis, and operational workflow improvements in a supply-chain-intensive business environment.</div>
+        <div class="wip-tags">
+          <span class="tag tag-wip">Market Research</span><span class="tag tag-wip">Supply Chain</span><span class="tag tag-wip">Data Tooling</span><span class="tag tag-wip">SMB</span>
         </div>
       </div>
 
@@ -584,8 +495,7 @@
   <div class="container">
     <div class="section-label">Skills</div>
     <h2 class="section-title">What I work with</h2>
-    <p class="section-desc">A combination of technical tools and business skills built across sales, account management, and AI operations.</p>
-
+    <p class="section-desc">Technical tools and business skills built across sales, account management, and AI operations.</p>
     <div class="skills-grid">
       <div class="skill-group">
         <div class="skill-group-title">AI &amp; Automation</div>
@@ -602,8 +512,8 @@
         <ul>
           <li>Web scraping &amp; data collection</li>
           <li>Lead qualification &amp; scoring</li>
-          <li>Market research</li>
-          <li>Competitive analysis</li>
+          <li>Market &amp; competitive research</li>
+          <li>Financial analysis</li>
           <li>X / Twitter API</li>
         </ul>
       </div>
@@ -635,7 +545,7 @@
 <section id="contact">
   <div class="container">
     <div class="contact-card">
-      <div class="section-label" style="justify-content:center;display:flex;margin-bottom:0.75rem;">Contact</div>
+      <div class="section-label" style="display:flex;justify-content:center;margin-bottom:0.75rem;">Contact</div>
       <h3>Let's work together</h3>
       <p>Open to full-time and contract opportunities in customer success, AI operations, and technical account management. Also available for research and automation projects.</p>
       <div class="contact-links">
@@ -647,7 +557,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 Will Hosking · Denver, CO</p>
 </footer>
