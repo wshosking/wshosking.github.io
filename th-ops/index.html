@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Hydration — Ops Dashboard</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; min-height: 100vh; padding: 24px; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+  .header-left h1 { font-size: 22px; font-weight: 700; color: #fff; }
+  .header-left p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .updated { font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; }
+
+  .section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; margin-top: 28px; }
+  .section-title:first-of-type { margin-top: 0; }
+
+  .grid { display: grid; gap: 12px; }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+  /* STATUS CARDS */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .stat-value { font-size: 26px; font-weight: 700; color: #fff; line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .stat-bar { height: 3px; border-radius: 2px; margin-bottom: 10px; }
+
+  /* CARDS */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .card-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 13px; font-weight: 600; color: #fff; }
+  .card-body { padding: 14px 16px; }
+
+  /* BADGES */
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .badge-muted { background: rgba(100,116,139,0.15); color: var(--muted); }
+
+  /* ITEM ROWS */
+  .item-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+  .item-row:last-child { border-bottom: none; }
+  .item-left { flex: 1; }
+  .item-title { font-size: 13px; font-weight: 500; color: #fff; }
+  .item-desc { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .item-right { flex-shrink: 0; display: flex; align-items: center; }
+
+  /* CONTACT ROW */
+  .contact-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .contact-row:last-child { border-bottom: none; }
+  .contact-avatar { width: 34px; height: 34px; border-radius: 8px; background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .contact-name { font-size: 13px; font-weight: 600; color: #fff; }
+  .contact-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .contact-email { font-size: 11px; color: var(--blue); margin-top: 2px; }
+
+  /* DOT */
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .dot-green { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-red { background: var(--red); }
+  .dot-blue { background: var(--blue); }
+
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>💧 Total Hydration — Ops Dashboard</h1>
+    <p>Managed by Craig · Will Hosking</p>
+  </div>
+  <div class="updated">Last updated: March 30, 2026</div>
+</div>
+
+<!-- STAT SUMMARY -->
+<div class="stat-row">
+  <div class="stat-card">
+    <div class="stat-label">Active Todos</div>
+    <div class="stat-bar" style="background:var(--red)"></div>
+    <div class="stat-value">2</div>
+    <div class="stat-sub">Action needed</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Waiting On</div>
+    <div class="stat-bar" style="background:var(--yellow)"></div>
+    <div class="stat-value">5</div>
+    <div class="stat-sub">Others to respond</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Completed</div>
+    <div class="stat-bar" style="background:var(--green)"></div>
+    <div class="stat-value">12</div>
+    <div class="stat-sub">This sprint</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">NSF Approval</div>
+    <div class="stat-bar" style="background:var(--blue)"></div>
+    <div class="stat-value">~30d</div>
+    <div class="stat-sub">Due ~Apr 29</div>
+  </div>
+</div>
+
+<!-- TODOS -->
+<div class="section-title">🔴 Action Required</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Apply for TX Sales Tax Permit</div>
+        <div class="item-desc">EIN: 85-3064876 · Apply at comptroller.texas.gov/taxes/permit/ · Needs Grant's SSN · Free, ~20 min, issued immediately · Then fill Utah TC-721NR → Grant signs → send to Marilyn Randall</div>
+      </div>
+      <div class="item-right"><span class="badge badge-red">🔴 Urgent · 18+ days</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Issue PO to Salt City Print</div>
+        <div class="item-desc">10,200 Unflavored boxes · Blocked on Emad payment method + FNSKU verification (X002A0SO3H)</div>
+      </div>
+      <div class="item-right"><span class="badge badge-yellow">⏳ Blocked</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- WAITING ON -->
+<div class="section-title">🟡 Waiting On Others</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Grant — DayLyte reorder decision</div>
+        <div class="item-desc">10k Unflavored ($54,500) + 3k Lemon ($20,850) = $75,350 · Plus: payment method CC vs wire · Email sent Mar 30</div>
+      </div>
+      <div class="item-right"><span class="badge badge-yellow">Since Mar 30</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Grant — SSN for TX Sales Tax Permit</div>
+        <div class="item-desc">Required to complete fresh permit application as company owner/signer</div>
+      </div>
+      <div class="item-right"><span class="badge badge-yellow">Since Mar 12</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Emad — Invoice/CC payment + FNSKU verify</div>
+        <div class="item-desc">Finance team re: invoice payment method · Also: confirm FNSKU X002A0SO3H = Unflavored DayLyte in Seller Central</div>
+      </div>
+      <div class="item-right"><span class="badge badge-yellow">Since Mar 30</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Ryan (FAME Health Labs) — 2k capsule quote</div>
+        <div class="item-desc">Quote for 2,000 Electrolyte Capsules reorder · Asked when GMP cert was sent</div>
+      </div>
+      <div class="item-right"><span class="badge badge-yellow">Since Mar 27</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">NSF — GMP approval</div>
+        <div class="item-desc">Order #00001612 · B07BN5FQSW + B0837H4MJ8 · $1,000 paid · ~30 day review · Once approved: relist both ASINs + reorder stock with Emad</div>
+      </div>
+      <div class="item-right"><span class="badge badge-blue">~Apr 29</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT RUN STATUS -->
+<div class="section-title">📦 Box Print Run — Salt City Print</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-header">
+    <span class="card-title">10,200 Unflavored Boxes</span>
+    <span class="badge badge-yellow">⏳ Proof Stage</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(34,197,94,0.12);color:var(--green)">✅ Art confirmed (Amazon barcode)</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(34,197,94,0.12);color:var(--green)">✅ Qty sent to James + Ian</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(234,179,8,0.12);color:var(--yellow)">⏳ Proof received from James</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(100,116,139,0.12);color:var(--muted)">○ Proof approved</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(100,116,139,0.12);color:var(--muted)">○ PO issued</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(100,116,139,0.12);color:var(--muted)">○ Print run (3–4 wks)</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(100,116,139,0.12);color:var(--muted)">○ Ship to CLS</span>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Barcode</div></div>
+      <div class="item-right" style="color:#fff;font-size:13px">850010349015 (Amazon)</div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">FNSKU (pending verify)</div></div>
+      <div class="item-right"><span class="badge badge-yellow">X002A0SO3H · Emad confirming</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Ship to</div></div>
+      <div class="item-right" style="color:var(--muted);font-size:12px;text-align:right">Brent Whetton · CLS · 3155 N Hwy 89, Pleasant View UT 84404</div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Lead time</div></div>
+      <div class="item-right" style="color:#fff;font-size:13px">3–4 weeks from PO</div>
+    </div>
+  </div>
+</div>
+
+<!-- LABELS -->
+<div class="section-title">🏷️ Label Order — Fortis Solutions</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-header">
+    <span class="card-title">10,500 Unflavored Labels · Order #171096</span>
+    <span class="badge badge-green">✅ Confirmed</span>
+  </div>
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Ships</div></div>
+      <div class="item-right" style="color:var(--green);font-weight:600">April 6, 2026</div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Payment</div></div>
+      <div class="item-right"><span class="badge badge-green">CC on file · Auto-charge</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Contact</div></div>
+      <div class="item-right" style="color:var(--muted);font-size:12px">Autumn · AR@FortisSolutionsGroup.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- NSF STATUS -->
+<div class="section-title">🏅 NSF GMP Certification</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-header">
+    <span class="card-title">Order #00001612 · $1,000 Paid</span>
+    <span class="badge badge-blue">⏳ In Review (~30 days)</span>
+  </div>
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">B07BN5FQSW — Electrolyte Capsules</div>
+        <div class="item-desc">Manufacturer: FAME Health Labs (Ryan Santoliquido) · Cedartown, GA</div>
+      </div>
+      <div class="item-right"><span class="badge badge-blue">In review</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">B0837H4MJ8 — Keto Electrolyte Pills</div>
+        <div class="item-desc">Manufacturer: Trace Minerals OPCO LLC · West Haven, UT</div>
+      </div>
+      <div class="item-right"><span class="badge badge-blue">In review</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Expected completion</div></div>
+      <div class="item-right" style="color:#fff;font-weight:600">~April 29, 2026</div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Once approved</div>
+        <div class="item-desc">Relist both ASINs on Amazon Seller Central · Reorder stock · Coordinate with Emad</div>
+      </div>
+      <div class="item-right"><span class="badge badge-muted">Pending approval</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAYLYTE REORDER -->
+<div class="section-title">📊 DayLyte Reorder Decision</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-header">
+    <span class="card-title">Pending Grant Approval</span>
+    <span class="badge badge-yellow">⏳ Waiting on Grant</span>
+  </div>
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Unflavored 10k units</div>
+        <div class="item-desc">$5.45/unit · Emad recommends · James Crawford (Trace Minerals)</div>
+      </div>
+      <div class="item-right" style="color:#fff;font-weight:700;font-size:15px">$54,500</div>
+    </div>
+    <div class="item-row">
+      <div class="item-left">
+        <div class="item-title">Lemon 3k units (at 5k MOQ price)</div>
+        <div class="item-desc">$6.95/unit · Emad recommends · James Crawford (Trace Minerals)</div>
+      </div>
+      <div class="item-right" style="color:#fff;font-weight:700;font-size:15px">$20,850</div>
+    </div>
+    <div class="item-row" style="border-top:2px solid var(--border)">
+      <div class="item-left"><div class="item-title" style="font-weight:700">Combined total</div></div>
+      <div class="item-right" style="color:var(--yellow);font-weight:700;font-size:18px">$75,350</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAX EXEMPTION -->
+<div class="section-title">📝 Utah TC-721NR — Tax Exemption (Trace Minerals)</div>
+<div class="card" style="margin-bottom:28px">
+  <div class="card-header">
+    <span class="card-title">Total Hydration Inc. · EIN 85-3064876</span>
+    <span class="badge badge-red">🔴 Urgent — 18+ days pending</span>
+  </div>
+  <div class="card-body">
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Step 1</div><div class="item-desc">Apply for TX Sales Tax Permit at comptroller.texas.gov/taxes/permit/ · Needs Grant's SSN</div></div>
+      <div class="item-right"><span class="badge badge-red">Not started</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Step 2</div><div class="item-desc">Fill Utah TC-721NR with TX permit number</div></div>
+      <div class="item-right"><span class="badge badge-muted">Pending Step 1</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Step 3</div><div class="item-desc">Send to Grant for signature</div></div>
+      <div class="item-right"><span class="badge badge-muted">Pending</span></div>
+    </div>
+    <div class="item-row">
+      <div class="item-left"><div class="item-title">Step 4</div><div class="item-desc">Submit to Marilyn Randall · Marilyn.R@traceminerals.com · 435-213-4755</div></div>
+      <div class="item-right"><span class="badge badge-muted">Pending</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACTS -->
+<div class="section-title">👥 Key Contacts</div>
+<div class="grid grid-2" style="margin-bottom:28px">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Trace Minerals</span></div>
+    <div class="card-body">
+      <div class="contact-row">
+        <div class="contact-avatar">🧂</div>
+        <div>
+          <div class="contact-name">James Crawford</div>
+          <div class="contact-role">Sr. Director, Bulk Sales & Contract Mfg</div>
+          <div class="contact-email">JamesC@traceminerals.com · 801-698-3105</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-avatar">💰</div>
+        <div>
+          <div class="contact-name">Marilyn Randall</div>
+          <div class="contact-role">Accounts Receivable (Tax Exemption)</div>
+          <div class="contact-email">Marilyn.R@traceminerals.com · 435-213-4755</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Vendors</span></div>
+    <div class="card-body">
+      <div class="contact-row">
+        <div class="contact-avatar">📦</div>
+        <div>
+          <div class="contact-name">Ian Peterson</div>
+          <div class="contact-role">Salt City Print (Box Printer)</div>
+          <div class="contact-email">ian@saltcityprint.com · 801-635-5122</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-avatar">🏪</div>
+        <div>
+          <div class="contact-name">Emad Barlas</div>
+          <div class="contact-role">MarketplaceOps · Sr. Client Success</div>
+          <div class="contact-email">emad@marketplaceops.com</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-avatar">💊</div>
+        <div>
+          <div class="contact-name">Ryan Santoliquido</div>
+          <div class="contact-role">FAME Health Labs (Capsule Mfg)</div>
+          <div class="contact-email">ryan@famehealthlabs.com · 201-398-8895</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DONE -->
+<div class="section-title">✅ Completed This Sprint</div>
+<div class="card">
+  <div class="card-body">
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ Box art confirmed — Unflavored (Amazon barcode, 850010349015)</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ Reply-all sent to James + Ian — 10,200 units confirmed</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ Proof received from James Crawford — verified Unflavored + 3ml serving size</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ Fortis labels — 10,500 units ordered, CC on file, ships Apr 6</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ GMP cert from Ryan (FAME Health Labs) → submitted to NSF</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ NSF payment $1,000 — Order #00001612 in review</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ DayLyte pricing saved — Unflavored 10k: $5.45/unit · Lemon 5k: $6.95/unit</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ HubSpot CRM built — all TH contacts, deals, tasks live</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ EIN confirmed — 85-3064876</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ TX Comptroller lookup — no existing account (must apply fresh)</div></div></div>
+    <div class="item-row"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ DayLyte reorder email sent to Grant for decision</div></div></div>
+    <div class="item-row" style="border-bottom:none"><div class="item-left"><div class="item-title" style="color:var(--green)">✅ Amazon Seller Central — plan to add Will as admin user (next access with Grant)</div></div></div>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:32px;font-size:11px;color:var(--muted)">
+  Total Hydration Inc. · EIN 85-3064876 · 10900 Research Blvd Ste 160C PMB 3064, Austin TX 78759<br>
+  Managed by Craig · chipbot55@gmail.com · Updated manually by Craig after each session
+</div>
+
+</body>
+</html>
