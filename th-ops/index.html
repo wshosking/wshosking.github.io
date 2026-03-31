@@ -86,11 +86,92 @@
   .contact-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
   .contact-info { font-size: 11px; color: var(--blue); margin-top: 2px; }
 
-  /* MOBILE */
+  /* MOBILE NAV BAR */
+  .mobile-nav { display: none; }
+
   @media (max-width: 680px) {
     .sidebar { display: none; }
-    .main { margin-left: 0; }
+    .main { margin-left: 0; padding-bottom: 70px; }
     .stats { grid-template-columns: 1fr 1fr; }
+    .page { padding: 16px; }
+    .topbar { padding: 12px 16px; }
+    .topbar-title { font-size: 14px; }
+    .updated-pill { display: none; }
+    .row { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .row-right { align-self: flex-start; }
+    .pipeline { gap: 5px; }
+    .step { font-size: 10px; padding: 3px 8px; }
+
+    /* MOBILE BOTTOM NAV */
+    .mobile-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      z-index: 200;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mob-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px 4px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+    }
+    .mob-nav-btn .mob-icon { font-size: 18px; line-height: 1; }
+    .mob-nav-btn.active { color: var(--green); }
+    .mob-nav-btn .mob-badge {
+      position: absolute;
+      top: 5px;
+      right: calc(50% - 14px);
+      background: var(--red);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mob-nav-btn .mob-badge.yellow { background: var(--yellow); color: #000; }
+
+    /* Mobile "More" drawer */
+    .mob-more-drawer {
+      display: none;
+      position: fixed;
+      bottom: calc(56px + env(safe-area-inset-bottom));
+      left: 0; right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      z-index: 190;
+      padding: 8px 0;
+    }
+    .mob-more-drawer.open { display: block; }
+    .mob-drawer-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .mob-drawer-btn:active { background: rgba(255,255,255,0.05); }
+    .mob-drawer-btn.active { color: var(--green); }
   }
 </style>
 </head>
@@ -439,14 +520,92 @@
   </div>
 </div>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav">
+  <button class="mob-nav-btn active" data-tab="overview">
+    <span class="mob-icon">📊</span>
+    <span>Overview</span>
+  </button>
+  <button class="mob-nav-btn" data-tab="todos">
+    <span class="mob-icon">🔴</span>
+    <span>Todos</span>
+    <span class="mob-badge">2</span>
+  </button>
+  <button class="mob-nav-btn" data-tab="waiting">
+    <span class="mob-icon">🟡</span>
+    <span>Waiting</span>
+    <span class="mob-badge yellow">5</span>
+  </button>
+  <button class="mob-nav-btn" data-tab="done">
+    <span class="mob-icon">✅</span>
+    <span>Done</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-more-btn">
+    <span class="mob-icon">☰</span>
+    <span>More</span>
+  </button>
+</nav>
+
+<!-- MOBILE MORE DRAWER -->
+<div class="mob-more-drawer" id="mob-more-drawer">
+  <button class="mob-drawer-btn" data-tab="printrun">📦 &nbsp;Print Run</button>
+  <button class="mob-drawer-btn" data-tab="nsf">🏅 &nbsp;NSF / Products</button>
+  <button class="mob-drawer-btn" data-tab="reorder">📈 &nbsp;Reorder</button>
+  <button class="mob-drawer-btn" data-tab="tax">📝 &nbsp;Tax Exemption</button>
+  <button class="mob-drawer-btn" data-tab="contacts">👥 &nbsp;Contacts</button>
+</div>
+
 <script>
+  function switchTab(tabName) {
+    // Update sidebar nav
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sideBtn = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
+    if (sideBtn) sideBtn.classList.add('active');
+
+    // Update mobile nav (main buttons)
+    document.querySelectorAll('.mob-nav-btn[data-tab]').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.mob-drawer-btn[data-tab]').forEach(b => b.classList.remove('active'));
+    const mobBtn = document.querySelector(`.mob-nav-btn[data-tab="${tabName}"]`);
+    const drawerBtn = document.querySelector(`.mob-drawer-btn[data-tab="${tabName}"]`);
+    if (mobBtn) mobBtn.classList.add('active');
+    if (drawerBtn) drawerBtn.classList.add('active');
+
+    // Show correct tab
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabName).classList.add('active');
+
+    // Close drawer and scroll to top
+    document.getElementById('mob-more-drawer').classList.remove('open');
+    window.scrollTo(0, 0);
+  }
+
+  // Sidebar nav
   document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    });
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Mobile bottom nav
+  document.querySelectorAll('.mob-nav-btn[data-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // More drawer toggle
+  document.getElementById('mob-more-btn').addEventListener('click', () => {
+    document.getElementById('mob-more-drawer').classList.toggle('open');
+  });
+
+  // Drawer items
+  document.querySelectorAll('.mob-drawer-btn[data-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Close drawer on outside tap
+  document.addEventListener('click', (e) => {
+    const drawer = document.getElementById('mob-more-drawer');
+    const moreBtn = document.getElementById('mob-more-btn');
+    if (!drawer.contains(e.target) && !moreBtn.contains(e.target)) {
+      drawer.classList.remove('open');
+    }
   });
 </script>
 </body>
