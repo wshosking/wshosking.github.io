@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WillHelp.AI — AI Research, Strategy & Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #181c27; --surface2: #1e2333; --border: #2a2f45;
+      --accent: #5b8dee; --accent2: #7c6ff7; --text: #e8eaf0; --muted: #8891a8;
+      --tag-bg: #1e2a44; --tag-color: #7aabff;
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; font-size: 16px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(15,17,23,0.94); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); z-index: 100; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    nav a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,141,238,0.12) 0%, transparent 70%); }
+    .hero-content { max-width: 700px; }
+    .hero-badge { display: inline-block; background: var(--tag-bg); color: var(--tag-color); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px; border: 1px solid rgba(91,141,238,0.25); margin-bottom: 1.5rem; }
+    h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem; color: #fff; }
+    h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.15rem; color: var(--muted); max-width: 540px; margin: 0 auto 2.5rem; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTIONS */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1060px; margin: 0 auto; }
+    .section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; }
+    .section-desc { font-size: 1.05rem; color: var(--muted); max-width: 600px; margin-bottom: 3.5rem; }
+
+    /* ABOUT */
+    #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1.02rem; }
+    .about-text p strong { color: var(--text); }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+    .stat-num { font-size: 1.9rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* PROJECT CARDS */
+    #projects { background: var(--bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.75rem; }
+
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; position: relative; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.25s; z-index: 1; }
+    .project-card:hover { border-color: rgba(91,141,238,0.4); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+    .project-card:hover::before { opacity: 1; }
+    .card-body { padding: 1.75rem; }
+    .project-icon { font-size: 1.75rem; margin-bottom: 0.9rem; }
+    .project-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.1rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+    .tag { background: var(--tag-bg); color: var(--tag-color); font-size: 0.74rem; font-weight: 500; padding: 0.22rem 0.62rem; border-radius: 100px; border: 1px solid rgba(91,141,238,0.15); }
+    .tag-wip { background: rgba(245,158,11,0.1); color: var(--yellow); border-color: rgba(245,158,11,0.2); }
+
+    /* VIEW LINK */
+    .view-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--accent); text-decoration: none; padding: 0.4rem 0.9rem; border: 1px solid rgba(91,141,238,0.3); border-radius: 6px; background: rgba(91,141,238,0.07); transition: all 0.2s; }
+    .view-link:hover { background: rgba(91,141,238,0.15); border-color: var(--accent); }
+
+    /* ══════════════════════════════════
+       APP WINDOW MOCKUP
+    ══════════════════════════════════ */
+    .app-window { margin-top: 1.25rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #0a0d14; }
+    .window-chrome { background: #1a1d2e; border-bottom: 1px solid var(--border); padding: 0.55rem 0.9rem; display: flex; align-items: center; gap: 0.65rem; }
+    .window-dots { display: flex; gap: 5px; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #28c840; }
+    .window-label { font-size: 0.7rem; color: var(--muted); font-weight: 500; margin-left: 0.25rem; }
+    .window-body { overflow: hidden; }
+    .window-body img { display: block; width: 100%; height: auto; max-height: 220px; object-fit: cover; object-position: top; transition: transform 0.4s ease; }
+    .project-card:hover .window-body img { transform: scale(1.02); }
+
+    /* SLIDE FILMSTRIP */
+    .slide-strip { display: flex; gap: 0.6rem; padding: 0.9rem; overflow-x: auto; background: #0a0d14; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .slide-strip::-webkit-scrollbar { height: 4px; }
+    .slide-strip::-webkit-scrollbar-track { background: transparent; }
+    .slide-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .slide-thumb-img { flex: 0 0 auto; width: 155px; height: 88px; border-radius: 6px; border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: all 0.2s; }
+    .slide-thumb-img:hover { border-color: var(--accent); transform: scale(1.03); }
+    .slide-thumb-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .slide-label { font-size: 0.65rem; color: var(--muted); text-align: center; margin-top: 0.25rem; }
+
+    /* FUNNEL VISUAL */
+    .funnel { padding: 1rem 1.25rem; background: #0a0d14; }
+    .funnel-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem; }
+    .funnel-bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 28px; overflow: hidden; }
+    .funnel-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 0.75rem; font-size: 0.75rem; font-weight: 600; color: #fff; transition: width 0.6s ease; }
+    .funnel-count { font-size: 0.82rem; font-weight: 700; min-width: 52px; text-align: right; }
+    .funnel-stage { font-size: 0.72rem; color: var(--muted); min-width: 110px; }
+    .funnel-arrow { font-size: 0.7rem; color: var(--muted); }
+
+    /* AGENT GRID */
+    .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .agent-cell { background: #0a0d14; padding: 0.85rem 1rem; }
+    .agent-name { font-size: 0.88rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.4rem; }
+    .agent-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .agent-role { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+    .agent-channel { font-size: 0.68rem; color: var(--accent); margin-top: 0.15rem; font-weight: 500; }
+
+    /* DASHBOARD PANELS */
+    .dash-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .dash-panel { background: #0a0d14; padding: 0.85rem 1rem; }
+    .dash-panel-title { font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .dash-panel-val { font-size: 1.3rem; font-weight: 700; color: var(--green); }
+    .dash-panel-sub { font-size: 0.68rem; color: var(--muted); margin-top: 0.15rem; }
+    .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
+
+    /* CRYPTO RESULT */
+    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .result-cell { background: #0a0d14; padding: 0.85rem; text-align: center; }
+    .result-num { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+    .result-lbl { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* WIP SECTION */
+    #wip { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .wip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .wip-card { background: var(--surface2); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; }
+    .wip-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--yellow), #f97316); }
+    .wip-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .wip-badge { font-size: 0.67rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 100px; background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); text-transform: uppercase; letter-spacing: 0.04em; }
+    .wip-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .wip-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    /* SKILLS */
+    #skills { background: var(--bg); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .skill-group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .skill-group-title { font-size: 0.85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
+    .skill-group ul { list-style: none; }
+    .skill-group li { font-size: 0.9rem; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+    .skill-group li:last-child { border-bottom: none; }
+
+    /* CONTACT */
+    #contact { background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
+    .contact-card { background: radial-gradient(ellipse at top, rgba(91,141,238,0.07), transparent 70%), var(--surface2); border: 1px solid var(--border); border-radius: 18px; padding: 3.5rem; max-width: 560px; margin: 0 auto; }
+    .contact-card h3 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+    .contact-card p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--green); color: #fff; font-size: 0.95rem; font-weight: 600; padding: 0.85rem 1.75rem; border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 999; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* RESUME DROPDOWN */
+    .resume-dropdown { position: relative; display: inline-block; }
+    .resume-dropdown .btn-secondary { display: flex; align-items: center; gap: 0.5rem; }
+    .resume-dropdown .btn-secondary::after { content: '▾'; font-size: 0.8rem; transition: transform 0.2s; }
+    .resume-dropdown.open .btn-secondary::after { transform: rotate(180deg); }
+    .dropdown-menu { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 50; min-width: 150px; }
+    .resume-dropdown.open .dropdown-menu { display: block; }
+    .dropdown-menu a { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1rem; font-size: 0.88rem; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.15s; }
+    .dropdown-menu a:hover { background: rgba(91,141,238,0.1); color: var(--accent); }
+    .dropdown-menu a + a { border-top: 1px solid var(--border); }
+
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.85rem; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav ul { display: none; }
+      .contact-card { padding: 2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>WillHelp</span>.AI</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#wip">Active</a></li>
+    <li><a href="#skills">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#contact">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">Operations · Research · Automation</div>
+    <h1>Your time is worth more<br/><span>than your to-do list.</span></h1>
+    <p>I take the operational and administrative weight off business owners and professionals — so they can focus on what actually moves the needle. Ongoing ops management, targeted research, automation, and AI systems that do real work.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">See the Work</a>
+      <a href="#contact" class="btn btn-secondary">Work With Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">About</div>
+        <h2 class="section-title">I take the work off your plate.<br/>And keep it off.</h2>
+        <p>Most business owners and professionals are excellent at what they do. The problem isn't capability — it's that the business side keeps getting in the way. Vendor follow-ups, compliance fires, research that needs doing, admin that piles up.</p>
+        <p>I step in as an AI-powered operations layer. I handle the work that's eating your time, surface what you need before you ask for it, and keep things moving while you focus on clients, deals, and growth. <strong>Project work or ongoing retainer — whatever the engagement looks like, I deliver actual results, not decks.</strong></p>
+        <p>8+ years in B2B sales and account management means I understand how businesses actually work — and what it takes to get things done inside them.</p>
+        <div style="margin-top:1.75rem;"><a href="#contact" class="btn btn-primary">Start a conversation</a></div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">8+</div><div class="stat-label">Industries served</div></div>
+        <div class="stat-card"><div class="stat-num">3,000+</div><div class="stat-label">Leads generated across client campaigns</div></div>
+        <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Client projects & engagements</div></div>
+        <div class="stat-card"><div class="stat-num">$21K+</div><div class="stat-label">Suppressed Amazon revenue unblocked</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Client Work</div>
+    <h2 class="section-title">Real problems. Real results.</h2>
+    <p class="section-desc">A sample of what I've delivered — from ongoing ops management to one-off research and analysis. Every engagement started with one question: what's actually getting in your way?</p>
+    <div class="projects-grid">
+
+      <!-- 1. MULTI-AGENT SYSTEM -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">🤖</div>
+          <div class="project-title">Multi-Agent AI Infrastructure — Built from Scratch</div>
+          <div class="project-desc">Designed, deployed, and run a 4-agent AI system on dedicated hardware — an exec assistant, coding agent, build/UI agent, and a dedicated user-facing agent. Each agent has its own workspace, memory system, and model assignment. The system runs 24/7 with heartbeat monitoring, scheduled cron jobs, and proactive alerting. Integrations include Google Workspace (Docs, Sheets, Calendar), Telegram, iMessage, web search, browser control, TTS, and image analysis. Model routing optimizes cost automatically — lightweight tasks run on cheap models, complex reasoning routes to Claude Sonnet. This is the same infrastructure powering all client work.</div>
+          <div class="project-tags">
+            <span class="tag">OpenClaw</span><span class="tag">Multi-Agent</span><span class="tag">Always-On</span><span class="tag">API Integration</span><span class="tag">Infrastructure</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Agent Architecture — Live System</span>
+          </div>
+          <div class="agent-grid">
+            <div class="agent-cell"><div class="agent-name"><span class="agent-dot"></span>Craig</div><div class="agent-role">Executive Assistant</div><div class="agent-channel">Telegram · Claude Sonnet</div></div>
+            <div class="agent-cell"><div class="agent-name"><span class="agent-dot"></span>Chip</div><div class="agent-role">User-Facing EA</div><div class="agent-channel">iMessage · Claude Sonnet</div></div>
+            <div class="agent-cell"><div class="agent-name"><span class="agent-dot"></span>Cody</div><div class="agent-role">Coding Agent</div><div class="agent-channel">Sub-agent · Claude Sonnet</div></div>
+            <div class="agent-cell"><div class="agent-name"><span class="agent-dot"></span>Bob</div><div class="agent-role">Build / UI Agent</div><div class="agent-channel">Sub-agent · Claude Haiku</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. MISSION CONTROL DASHBOARD -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">🖥️</div>
+          <div class="project-title">Mission Control Dashboard</div>
+          <div class="project-desc">Custom ops dashboard built alongside the multi-agent system — agent status, session logs, cost tracking, and activity monitoring. Built and functional; a proof-of-concept for the kind of visibility any AI deployment should have. Designed to be replicable for any client system I manage.</div>
+          <div class="project-tags">
+            <span class="tag">Dashboard</span><span class="tag">Real-Time</span><span class="tag">UI/UX</span><span class="tag">AI Ops</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Mission Control — Live Dashboard</span>
+          </div>
+          <div class="dash-panels">
+            <div class="dash-panel"><div class="dash-panel-title">Agents Online</div><div class="dash-panel-val">4 / 4</div><div class="dash-panel-sub"><span class="status-dot" style="background:var(--green)"></span>24/7 always-on</div></div>
+            <div class="dash-panel"><div class="dash-panel-title">Integrations</div><div class="dash-panel-val" style="color:var(--accent)">20+</div><div class="dash-panel-sub">APIs connected live</div></div>
+            <div class="dash-panel"><div class="dash-panel-title">Memory System</div><div class="dash-panel-val" style="color:var(--yellow)">Active</div><div class="dash-panel-sub">Daily + long-term recall</div></div>
+            <div class="dash-panel"><div class="dash-panel-title">Model Routing</div><div class="dash-panel-val" style="color:var(--green)">Smart</div><div class="dash-panel-sub">Cost-optimized per task</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. EA AGENT BUILD -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">🧑‍💼</div>
+          <div class="project-title">Custom AI Executive Assistant — VC Managing Partner</div>
+          <div class="project-desc">Built and deployed a fully dedicated AI executive assistant for a Managing Partner at a venture capital firm — with board seats at portfolio companies and active deal flow. Lives on iMessage (the client's native workflow) with a custom persona, completely isolated workspace, and tailored long-term memory. Handles calendar awareness, deal and company research, reminders, travel logistics, and personal tasks. Architected for security: no access to fund systems, email, or CRM — operates on a safe relay model where the client brings information in, and the agent acts on it. Built to disappear into the background of how the client already works.</div>
+          <div class="project-tags">
+            <span class="tag">AI Agent</span><span class="tag">Executive Assistant</span><span class="tag">iMessage</span><span class="tag">VC / Finance</span><span class="tag">Custom Build</span><span class="tag">Ongoing</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">EA Agent — Configuration Overview</span>
+          </div>
+          <div class="agent-grid">
+            <div class="agent-cell"><div class="agent-name"><span class="agent-dot"></span>Deployed</div><div class="agent-role">Live on iMessage</div><div class="agent-channel">BlueBubbles · Claude Sonnet</div></div>
+            <div class="agent-cell"><div class="agent-name" style="color:var(--accent)">Isolated</div><div class="agent-role">Separate workspace</div><div class="agent-channel">No context bleed · secure</div></div>
+            <div class="agent-cell"><div class="agent-name">Custom</div><div class="agent-role">Persona + memory</div><div class="agent-channel">Tailored to user preferences</div></div>
+            <div class="agent-cell"><div class="agent-name">Full-stack</div><div class="agent-role">EA scope</div><div class="agent-channel">Calendar · research · tasks</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. AMAZON OPS -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">📦</div>
+          <div class="project-title">Amazon Seller Operations — Consumer Health Brand</div>
+          <div class="project-desc">Took over full operational management of a multi-SKU Amazon seller account. Unblocked GMP compliance issues that had suppressed $21,000+ in listings for months, coordinated purchase orders across three vendors, initiated inventory restocks on multiple SKUs, and re-established communication systems between the account owner and the marketing/inventory team. Ongoing managed ops engagement.</div>
+          <div class="project-tags">
+            <span class="tag">Amazon Ops</span><span class="tag">Vendor Management</span><span class="tag">Compliance</span><span class="tag">Inventory Planning</span><span class="tag">Ongoing</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Operations Status — Week 1</span>
+          </div>
+          <div class="result-grid">
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">$21K+</div><div class="result-lbl">Suppressed listings unblocked</div></div>
+            <div class="result-cell"><div class="result-num">3</div><div class="result-lbl">Vendor POs coordinated</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--yellow)">4</div><div class="result-lbl">SKU restocks initiated</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">Ongoing</div><div class="result-lbl">Retained monthly engagement</div></div>
+            <div class="result-cell"><div class="result-num">Months</div><div class="result-lbl">Of backlog cleared in days</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--accent)">Live</div><div class="result-lbl">Active ops management</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CAR WASH -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">🚗</div>
+          <div class="project-title">Car Wash Acquisition Research — Investment Group</div>
+          <div class="project-desc">Scraped 493 car wash listings across 4 data sources (BizBuySell, DealStream, BusinessBroker.net, and others), applied a custom multi-factor investment scoring model against the buyer's exact criteria — asset type (express/tunnel only), price range ($2.5M–$15M), SDE/EBITDA thresholds, real estate ownership, and target geographies across 11 states. Surfaced 36 top contenders from the full dataset, including 2 strong matches with verified financials and real estate included. Buyers went straight to seller conversations — zero manual research required.</div>
+          <div class="project-tags">
+            <span class="tag">Deal Sourcing</span><span class="tag">Financial Scoring</span><span class="tag">Web Scraping</span><span class="tag">M&amp;A Research</span><span class="tag">SMB Acquisition</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Scored Listings — Investment Analysis</span>
+          </div>
+          <div class="result-grid">
+            <div class="result-cell"><div class="result-num">493</div><div class="result-lbl">Listings scraped</div></div>
+            <div class="result-cell"><div class="result-num">4</div><div class="result-lbl">Data sources</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--yellow)">11</div><div class="result-lbl">States in buy box</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--yellow)">36</div><div class="result-lbl">Top contenders</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">2</div><div class="result-lbl">Strong matches (verified)</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">RE+</div><div class="result-lbl">Real estate included both</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. STR LEAD RESEARCH -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">🏡</div>
+          <div class="project-title">STR Lead Research — Vacation Rental Operator</div>
+          <div class="project-desc">Two-part lead generation engagement for a luxury short-term rental management company expanding in Colorado. First: scraped 238 unique X/Twitter users across 7 STR investor keyword searches, filtering to 28 outreach-ready leads by removing tools, competitors, lenders, and off-market noise. Second: parsed a 796-record county STR license dataset to surface 413 properties with 8+ max occupancy — and a Breckenridge-specific shortlist of 188 addresses as a direct pipeline to high-value homeowner prospects. Two entirely different data sources, one cohesive outreach strategy.</div>
+          <div class="project-tags">
+            <span class="tag">Lead Generation</span><span class="tag">Real Estate</span><span class="tag">X / Twitter</span><span class="tag">Data Parsing</span><span class="tag">STR / Vacation Rental</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Dual Pipeline — X Scrape + License Data</span>
+          </div>
+          <div class="result-grid">
+            <div class="result-cell"><div class="result-num">238</div><div class="result-lbl">X users scraped</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">28</div><div class="result-lbl">Clean outreach leads</div></div>
+            <div class="result-cell"><div class="result-num">796</div><div class="result-lbl">STR license records parsed</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--yellow)">413</div><div class="result-lbl">8+ occupancy properties</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">188</div><div class="result-lbl">Breckenridge shortlist</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">DM ✓</div><div class="result-lbl">Reachability confirmed</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. SOCIAL COMMENT MINING -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">📊</div>
+          <div class="project-title">Social Audience Mining: 2,400 Posts → 92 Leads</div>
+          <div class="project-desc">Scraped 3+ years of post history from a prominent tech founder and executive's X/Twitter account — over 2,400 posts — to identify high-quality audience members from the comment section. Built a multi-stage qualification pipeline: keyword signal match → engagement depth filter → profile quality assessment → DM reachability confirmed. Reduced 700+ raw commenters to 92 verified, outreach-ready profiles. Delivered as a ranked spreadsheet with signals noted per lead.</div>
+          <div class="project-tags">
+            <span class="tag">Audience Research</span><span class="tag">X / Twitter</span><span class="tag">Data Pipeline</span><span class="tag">Lead Qualification</span><span class="tag">Tech / AI</span>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Qualification Funnel</span>
+          </div>
+          <div class="funnel">
+            <div class="funnel-row">
+              <span class="funnel-stage">Post history</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:rgba(91,141,238,0.35);">3+ years scraped</div></div>
+              <span class="funnel-count" style="color:var(--muted)">2,400+</span>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-stage">Commenters found</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:70%;background:rgba(91,141,238,0.5);">Keyword signals</div></div>
+              <span class="funnel-count" style="color:var(--muted)">700+</span>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-stage">Engagement filter</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:38%;background:rgba(91,141,238,0.65);">Profile quality</div></div>
+              <span class="funnel-count" style="color:var(--yellow)">~250</span>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-stage">DM + reach check</span>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:13%;background:var(--green);">Qualified ✓</div></div>
+              <span class="funnel-count" style="color:var(--green);font-weight:700">92</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. CRYPTO BACKTEST -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">📈</div>
+          <div class="project-title">Crypto Trading Strategy Backtest</div>
+          <div class="project-desc">Backtested a day trading strategy across 6 variations and 3 Coinbase assets. Analyzed signal types, timeframes, win rates, and drawdown across 18 combinations to determine whether there was edge worth building automated execution code around.</div>
+          <div class="project-tags">
+            <span class="tag">Backtesting</span><span class="tag">Quant Analysis</span><span class="tag">Coinbase</span><span class="tag">Strategy Research</span>
+          </div>
+          <div style="margin-top:0.75rem;">
+            <a href="crypto-backtest.html" target="_blank" class="view-link">📊 View Full Results &amp; Charts →</a>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Backtest Matrix — 18 Combinations</span>
+          </div>
+          <div class="result-grid">
+            <div class="result-cell"><div class="result-num">6</div><div class="result-lbl">Strategy variations</div></div>
+            <div class="result-cell"><div class="result-num">3</div><div class="result-lbl">Coinbase assets</div></div>
+            <div class="result-cell"><div class="result-num">18</div><div class="result-lbl">Total combinations</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--yellow)">Win%</div><div class="result-lbl">Per-strategy tracked</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--red)">DD%</div><div class="result-lbl">Max drawdown tested</div></div>
+            <div class="result-cell"><div class="result-num" style="color:var(--green)">Rec.</div><div class="result-lbl">Build / no-build output</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. CANNABIS -->
+      <div class="project-card">
+        <div class="card-body">
+          <div class="project-icon">⚖️</div>
+          <div class="project-title">Cannabis & Hemp Law Analysis</div>
+          <div class="project-desc">Full strategic brief for a sales advisor evaluating a commission + equity role at an Ohio hemp beverage brand with a 9-month regulatory window. Covered market opportunity, competitive landscape, GTM strategy, and a 90-day action plan.</div>
+          <div class="project-tags">
+            <span class="tag">Regulatory Research</span><span class="tag">Market Analysis</span><span class="tag">GTM Strategy</span><span class="tag">Career Advisory</span>
+          </div>
+          <div style="margin-top:0.75rem;">
+            <a href="cannabis-market-analysis.html" target="_blank" class="view-link">📄 View Full Analysis →</a>
+          </div>
+        </div>
+        <div class="app-window">
+          <div class="window-chrome">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="window-label">Strategic Brief — 9 Sections</span>
+          </div>
+          <div class="agent-grid">
+            <div class="agent-cell"><div class="agent-name">$720K ARR</div><div class="agent-role">Client annual revenue</div></div>
+            <div class="agent-cell"><div class="agent-name" style="color:var(--red)">9 months</div><div class="agent-role">Regulatory runway remaining</div></div>
+            <div class="agent-cell"><div class="agent-name">$8.07B</div><div class="agent-role">Beverage market by 2035</div></div>
+            <div class="agent-cell"><div class="agent-name" style="color:var(--green)">90-day</div><div class="agent-role">Action plan delivered</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- IN PROGRESS -->
+<section id="wip">
+  <div class="container">
+    <div class="section-label">Active Engagements</div>
+    <h2 class="section-title">Currently in the field</h2>
+    <p class="section-desc">Ongoing client work across a few industries — each one started as a conversation about where AI could actually help.</p>
+    <div class="wip-grid">
+      <div class="wip-card">
+        <div class="wip-title">📦 Amazon Seller Operations — Consumer Health Brand <span class="wip-badge">Active</span></div>
+        <div class="wip-desc">Ongoing operational management of a multi-SKU Amazon seller account. Handling vendor coordination, inventory replenishment, GMP compliance, payment processing, and day-to-day communication with the marketing and operations team — so the account owner doesn't have to.</div>
+        <div class="wip-tags"><span class="tag tag-wip">Amazon Ops</span><span class="tag tag-wip">Vendor Management</span><span class="tag tag-wip">Inventory</span><span class="tag tag-wip">Retainer</span></div>
+      </div>
+      <div class="wip-card">
+        <div class="wip-title">⚓ Marine Industry AI <span class="wip-badge">In Progress</span></div>
+        <div class="wip-desc">Building AI-assisted research and operations tools for a tugboat company. Identifying where AI can streamline operations, reduce manual research overhead, and surface business intelligence in a traditionally paper-heavy industry.</div>
+        <div class="wip-tags"><span class="tag tag-wip">Operations</span><span class="tag tag-wip">Research</span><span class="tag tag-wip">Maritime</span><span class="tag tag-wip">AI Tools</span></div>
+      </div>
+      <div class="wip-card">
+        <div class="wip-title">🪵 Lumber Industry Research <span class="wip-badge">In Progress</span></div>
+        <div class="wip-desc">Scoping AI research and data tooling for a lumber yard client. Focus on market intelligence, supplier analysis, and operational workflow improvements in a supply-chain-intensive environment.</div>
+        <div class="wip-tags"><span class="tag tag-wip">Market Research</span><span class="tag tag-wip">Supply Chain</span><span class="tag tag-wip">Data Tooling</span><span class="tag tag-wip">SMB</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Services</div>
+    <h2 class="section-title">What I can do for you</h2>
+    <p class="section-desc">Every engagement starts with one question: where is your time going that it shouldn't be? Here's where I typically take over.</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Ongoing Operations</div>
+        <ul><li>Monthly retainer engagements</li><li>Vendor &amp; supplier management</li><li>Platform &amp; compliance management</li><li>Inventory planning &amp; reorders</li><li>Client &amp; stakeholder communication</li></ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">AI Agents &amp; Automation</div>
+        <ul><li>Custom AI agent builds</li><li>Proactive alerts &amp; scheduling</li><li>Multi-agent systems</li><li>AI executive assistants</li><li>Workflow automation</li></ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Research &amp; Intelligence</div>
+        <ul><li>Competitive landscape analysis</li><li>Market sizing &amp; opportunity briefs</li><li>Lead scoring &amp; qualification</li><li>Deal sourcing &amp; due diligence</li><li>Investor-ready research packs</li></ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Strategy &amp; Advisory</div>
+        <ul><li>Discovery &amp; problem scoping</li><li>AI opportunity assessment</li><li>Business case development</li><li>Process improvement</li><li>Fractional ops support</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I WORK -->
+<section id="how" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Two ways to work together</h2>
+    <p class="section-desc">Whether you need something solved once or someone to keep things running every month — I work both ways.</p>
+    <div class="about-grid">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;">
+        <div style="font-size:1.75rem;margin-bottom:0.75rem;">🎯</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.75rem;">One-Time Project</div>
+        <p style="color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:1rem;">You have a specific problem — a market you want researched, a dataset you need scraped, a system you want built. I scope it, price it, and deliver it. Clean engagement with a clear output.</p>
+        <ul style="color:var(--muted);font-size:0.9rem;line-height:1.9;padding-left:1.2rem;">
+          <li>Research briefs &amp; market analysis</li>
+          <li>Lead generation &amp; data pipelines</li>
+          <li>AI agent builds &amp; automations</li>
+          <li>Deal sourcing &amp; financial scoring</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid rgba(91,141,238,0.4);border-radius:16px;padding:2rem;position:relative;">
+        <div style="position:absolute;top:-12px;left:1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:0.72rem;font-weight:700;padding:0.25rem 0.75rem;border-radius:100px;letter-spacing:0.06em;text-transform:uppercase;">Most Popular</div>
+        <div style="font-size:1.75rem;margin-bottom:0.75rem;">🔄</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.75rem;">Monthly Retainer</div>
+        <p style="color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:1rem;">I become your ongoing operations layer. You focus on your clients and your craft — I handle everything else. Vendor management, follow-ups, research, scheduling, compliance, communications. It runs in the background so you don't have to think about it.</p>
+        <ul style="color:var(--muted);font-size:0.9rem;line-height:1.9;padding-left:1.2rem;">
+          <li>Ongoing vendor &amp; supplier management</li>
+          <li>Client communication &amp; follow-ups</li>
+          <li>Platform &amp; compliance oversight</li>
+          <li>Proactive alerts &amp; weekly briefings</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-card">
+      <div class="section-label" style="display:flex;justify-content:center;margin-bottom:0.75rem;">Contact</div>
+      <h3>Let's talk about what's slowing you down.</h3>
+      <p>Tell me where your time is going. If I can take it off your plate — and I probably can — I'll tell you exactly how. No pressure, no pitch deck, no 12-slide deck to review.</p>
+      <div class="contact-links">
+        <button class="btn btn-primary" id="emailBtn" onclick="copyEmail(this)">W.S.Hosking@gmail.com</button>
+        <a href="https://www.linkedin.com/in/william-hosking-a800ba88/" class="btn btn-secondary" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><p>© 2026 WillHelp.AI · Will Hosking · Denver, CO</p></footer>
+<div class="toast" id="toast">✓ Email copied to clipboard</div>
+
+<script>
+  function copyEmail(btn) {
+    navigator.clipboard.writeText('W.S.Hosking@gmail.com').then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(function() {
+        btn.textContent = orig;
+        toast.classList.remove('show');
+      }, 2500);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('resumeDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+</script>
+</body>
+</html>
